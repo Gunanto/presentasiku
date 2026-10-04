@@ -33,8 +33,11 @@
   .sub{font-size:2.9vmin;color:var(--muted);margin-top:2vmin;max-width:60ch;line-height:1.5}
   .lead{font-size:3.4vmin;line-height:1.45;color:#dbe4ff;max-width:58ch}
   .slide>.watermark{position:absolute;right:4vmin;top:52%;transform:translateY(-50%);
-    font-size:32vmin;line-height:1;opacity:.09;pointer-events:none;user-select:none;
-    filter:saturate(.7);z-index:0}
+    font-size:34vmin;line-height:1;opacity:.13;pointer-events:none;user-select:none;
+    filter:saturate(.85);z-index:0}
+  .slide>.watermark::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:48vmin;height:48vmin;border-radius:50%;z-index:-1;
+    background:radial-gradient(circle,rgba(230,57,70,.17),rgba(255,201,77,.08) 55%,transparent 72%)}
   .slide>*{position:relative;z-index:1}
   .slide>.cover-bg,.slide>.cover-veil{position:absolute;inset:0;z-index:0}
   .bullets{list-style:none;margin-top:3vmin;display:flex;flex-direction:column;gap:1.8vmin;max-width:72ch}
