@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI untuk Guru Matematika — Gunanto (Webinar FKN)</title>
+<style>
+
+  :root{
+    --navy:#0a1730; --navy2:#10234d; --card:#132a5c;
+    --red:#e63946; --gold:#ffc94d; --ink:#f5f8ff; --muted:#aeb9d8;
+    --green:#2ec4b6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#050b1a;color:var(--ink);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    overflow:hidden}
+  #deck{position:fixed;inset:0}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+    padding:6vmin 7vmin;background:radial-gradient(1200px 700px at 85% 10%,#16295e 0%,var(--navy) 55%,#070f24 100%)}
+  .slide.active{display:flex}
+  .slide.cover{padding:0;justify-content:flex-end}
+  .cover-bg{position:absolute;inset:0;background:url("assets/ilustrasi-cover.jpg") center/cover no-repeat}
+  .cover-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,12,32,.25) 0%,rgba(7,12,32,.55) 45%,rgba(7,12,32,.96) 100%)}
+  .cover-inner{position:relative;padding:6vmin 7vmin}
+  .kicker{display:inline-block;align-self:flex-start;font-size:2.2vmin;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--gold);border:1px solid rgba(255,201,77,.55);border-radius:999px;
+    padding:.9vmin 2.4vmin;margin-bottom:2.4vmin;background:rgba(255,201,77,.08)}
+  h1{font-size:6.4vmin;line-height:1.08;font-weight:800;letter-spacing:-.01em;max-width:20ch}
+  h1 .hl{color:var(--gold)}
+  h1 .rd{color:var(--red)}
+  h2{font-size:4.6vmin;font-weight:800;line-height:1.15;margin-bottom:2.6vmin;max-width:26ch}
+  h2 .hl{color:var(--gold)}
+  .sub{font-size:2.9vmin;color:var(--muted);margin-top:2vmin;max-width:60ch;line-height:1.5}
+  .lead{font-size:3.4vmin;line-height:1.45;color:#dbe4ff;max-width:58ch}
+  .slide>.watermark{position:absolute;right:4vmin;top:52%;transform:translateY(-50%);
+    font-size:34vmin;line-height:1;opacity:.13;pointer-events:none;user-select:none;
+    filter:saturate(.85);z-index:0}
+  .slide>.watermark::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:48vmin;height:48vmin;border-radius:50%;z-index:-1;
+    background:radial-gradient(circle,rgba(230,57,70,.17),rgba(255,201,77,.08) 55%,transparent 72%)}
+  .slide>*{position:relative;z-index:1}
+  .slide>.cover-bg,.slide>.cover-veil{position:absolute;inset:0;z-index:0}
+  .bullets{list-style:none;margin-top:3vmin;display:flex;flex-direction:column;gap:1.8vmin;max-width:72ch}
+  .bullets li{font-size:3vmin;line-height:1.45;padding-left:4.2vmin;position:relative;color:#e8eeff}
+  .bullets li::before{content:"";position:absolute;left:0;top:1.35vmin;width:2.2vmin;height:2.2vmin;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 1.6vmin rgba(255,201,77,.7)}
+  .bullets li b{color:#fff}
+  .cards{display:grid;gap:2.4vmin;margin-top:3vmin}
+  .cards.c2{grid-template-columns:1fr 1fr}
+  .cards.c3{grid-template-columns:1fr 1fr 1fr}
+  .cards.c4{grid-template-columns:repeat(4,1fr)}
+  .card{background:linear-gradient(160deg,rgba(30,52,110,.85),rgba(16,32,74,.85));
+    border:1px solid rgba(140,170,255,.22);border-radius:2.2vmin;padding:3vmin;
+    box-shadow:0 1.5vmin 4vmin rgba(0,0,0,.35)}
+  .card .ico{font-size:5vmin;margin-bottom:1.2vmin}
+  .card h3{font-size:2.9vmin;margin-bottom:1vmin;color:var(--gold)}
+  .card p{font-size:2.4vmin;line-height:1.5;color:#d7e0f8}
+  .card p b{color:#fff}
+  .quote{font-size:4.2vmin;font-weight:700;line-height:1.35;color:#fff;max-width:30ch;
+    border-left:1vmin solid var(--gold);padding-left:3vmin;margin-top:3vmin}
+  .quote small{display:block;font-size:2.4vmin;color:var(--muted);font-weight:400;margin-top:1.4vmin}
+  .steps{display:flex;gap:2vmin;margin-top:3vmin}
+  .step{flex:1;background:linear-gradient(160deg,rgba(30,52,110,.9),rgba(16,32,74,.9));
+    border:1px solid rgba(140,170,255,.25);border-radius:2.2vmin;padding:2.6vmin;text-align:center;position:relative}
+  .step .n{font-size:2.2vmin;font-weight:800;color:var(--navy);background:var(--gold);
+    width:5vmin;height:5vmin;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1.4vmin}
+  .step h3{font-size:2.8vmin;color:#fff;margin-bottom:.8vmin}
+  .step p{font-size:2.2vmin;color:var(--muted);line-height:1.45}
+  .step:not(:last-child)::after{content:"›";position:absolute;right:-2.4vmin;top:42%;font-size:5vmin;color:var(--gold)}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:2.4vmin;margin-top:3vmin}
+  .vs .bad,.vs .good{border-radius:2.2vmin;padding:3vmin}
+  .vs .bad{background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.6)}
+  .vs .good{background:rgba(46,196,182,.1);border:1px solid rgba(46,196,182,.6)}
+  .vs h3{font-size:2.8vmin;margin-bottom:1.4vmin}
+  .vs .bad h3{color:#ff8a94}.vs .good h3{color:#7fe7dc}
+  .vs p{font-size:2.5vmin;line-height:1.55;color:#e8eeff}
+  .promptbox{font-size:2.3vmin;background:rgba(0,0,0,.35);border-radius:1.4vmin;
+    padding:1.8vmin 2.2vmin;margin-top:1.4vmin;color:#cfe0ff;font-style:italic;line-height:1.5}
+  .split{display:grid;grid-template-columns:1.05fr .95fr;gap:4vmin;align-items:center}
+  .illus{border-radius:2.4vmin;box-shadow:0 2vmin 5vmin rgba(0,0,0,.5);width:100%;object-fit:cover}
+  .meta{display:flex;align-items:center;gap:2.4vmin;margin-top:3.4vmin}
+  .meta img{width:11vmin;height:11vmin;border-radius:50%;object-fit:cover;background:#fff;padding:.6vmin}
+  .meta .who{font-size:2.7vmin;font-weight:700}
+  .meta .det{font-size:2.3vmin;color:var(--muted);margin-top:.5vmin}
+  .eventline{font-size:2.3vmin;color:var(--muted);margin-top:2.6vmin;letter-spacing:.06em}
+  .bignum{font-size:11vmin;font-weight:800;color:var(--gold);line-height:1}
+  .tag{display:inline-block;background:rgba(230,57,70,.16);border:1px solid rgba(230,57,70,.55);
+    color:#ffb3ba;font-size:2.4vmin;border-radius:1.2vmin;padding:1vmin 2vmin;margin:0 1vmin 1.4vmin 0}
+  #bar{position:fixed;left:0;bottom:0;height:.8vmin;background:linear-gradient(90deg,var(--red),var(--gold));
+    width:0;z-index:50;transition:width .3s}
+  #count{position:fixed;right:3vmin;bottom:2.4vmin;font-size:2vmin;color:var(--muted);z-index:50;letter-spacing:.15em}
+  #hint{position:fixed;left:3vmin;bottom:2.4vmin;font-size:2vmin;color:rgba(174,185,216,.55);z-index:50}
+  .foot-brand{position:absolute;top:4vmin;right:5vmin;display:flex;align-items:center;gap:1.6vmin;z-index:5}
+  .foot-brand img{width:7.5vmin;height:7.5vmin;border-radius:50%;background:#fff;padding:.5vmin;object-fit:cover}
+  .foot-brand span{font-size:2.1vmin;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;line-height:1.6;text-align:left}
+  @media print{
+    html,body{overflow:visible}
+    #deck{position:static}
+    .slide{position:relative;display:flex!important;page-break-after:always;height:100vh}
+    #bar,#count,#hint{display:none}
+  }
+
+</style>
+</head>
+<body>
+<div id="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover active">
+  <div class="cover-bg" style="background:url('assets/fkn-cover.jpg') center/cover no-repeat"></div><div class="cover-veil"></div>
+  <div class="cover-inner">
+    <span class="kicker">Webinar FKN • Forum Komunikasi MGMP Matematika SMP</span>
+    <h1>AI untuk Guru <span class="hl">Matematika</span></h1>
+    <p class="sub">Membuat pembelajaran lebih <b>personal</b>, <b>kreatif</b>, dan <b>efektif</b></p>
+    <div class="meta">
+      <img src="assets/logo-fkn.jpg" alt="Logo FKN">
+      <div>
+        <div class="who">Gunanto</div>
+        <div class="det">Guru Matematika — SMPN 1 Punggur</div>
+      </div>
+    </div>
+    <p class="eventline">GOOGLE MEET &nbsp;•&nbsp; SELASA, 20 OKTOBER 2026 &nbsp;•&nbsp; 500 GURU MATEMATIKA SMP</p>
+  </div>
+</section>
+
+<!-- 2 PERKENALAN -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">👨‍🏫</span>
+  <span class="kicker">Perkenalan</span>
+  <h2>Halo, saya <span class="hl">Gunanto</span></h2>
+  <ul class="bullets">
+    <li><b>Guru Matematika</b> SMPN 1 Punggur, Lampung Tengah</li>
+    <li>Saya <b>praktisi, bukan teoritis</b> — semua yang saya sampaikan sudah saya pakai sendiri</li>
+    <li>Bukti: belasan media pembelajaran matematika <b>live di internet</b>, dibuat dengan bantuan AI</li>
+    <li>Bahkan <b>slide presentasi ini</b> tayang dari GitHub Pages — akan kita bedah caranya</li>
+  </ul>
+</section>
+
+<!-- 3 AGENDA -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Agenda • 90 Menit</span>
+  <h2>Perjalanan <span class="hl">kita</span> hari ini</h2>
+  <div class="cards c3">
+    <div class="card"><div class="ico">🤖</div><h3>1. Apa itu AI</h3><p>Memahami dengan bahasa sederhana — tanpa jargon</p></div>
+    <div class="card"><div class="ico">🎯</div><h3>2. AI untuk Matematika</h3><p>Personal, kreatif, efektif — dengan contoh nyata</p></div>
+    <div class="card"><div class="ico">🧠</div><h3>3. Agent Muse</h3><p>Membuat asisten AI pribadi di <b>muse.ai</b> + demo</p></div>
+    <div class="card"><div class="ico">🐙</div><h3>4. Akun GitHub</h3><p>Rumah digital untuk karya Bapak/Ibu + demo</p></div>
+    <div class="card"><div class="ico">🚀</div><h3>5. GitHub Pages</h3><p>Menerbitkan karya ke internet, gratis + demo</p></div>
+    <div class="card"><div class="ico">⚖️</div><h3>6. Etika &amp; Penutup</h3><p>Batasan yang jujur, lalu langkah mulai besok</p></div>
+  </div>
+</section>
+
+<!-- 4 TIGA JANJI -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Janji Sesi Ini</span>
+  <h2>Matematika yang lebih <span class="hl">personal, kreatif, efektif</span></h2>
+  <div class="cards c3">
+    <div class="card"><div class="ico">👧</div><h3>Personal</h3><p>Materi menyesuaikan <b>level tiap murid</b> — bukan satu ukuran untuk semua</p></div>
+    <div class="card"><div class="ico">🎨</div><h3>Kreatif</h3><p>Kuis, game, dan media interaktif <b>buatan sendiri</b> dalam hitungan menit</p></div>
+    <div class="card"><div class="ico">⚡</div><h3>Efektif</h3><p>Asesmen, analisis, dan umpan balik <b>tanpa lembur</b> sampai malam</p></div>
+  </div>
+</section>
+
+<!-- 5 APA ITU AI -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <div class="split">
+    <div>
+      <span class="kicker">Fondasi</span>
+      <h2>Apa itu <span class="hl">AI?</span></h2>
+      <p class="quote">"Program komputer yang <b>belajar dari data</b> sehingga bisa meniru kemampuan manusia: membaca, menulis, menghitung, menggambar."<small>— definisi satu kalimat, cukup untuk memulai</small></p>
+    </div>
+    <img class="illus" src="assets/fkn-ai-brain.jpg" alt="Otak AI">
+  </div>
+</section>
+
+<!-- 6 CARA KERJA -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Fondasi</span>
+  <h2>Cara kerja AI, <span class="hl">sederhananya</span></h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>📚 Belajar</h3><p>AI membaca <b>miliaran teks</b> — buku, artikel, soal, percakapan</p></div>
+    <div class="step"><span class="n">2</span><h3>🧩 Pola</h3><p>Ia menemukan <b>pola bahasa &amp; logika</b> dari semua itu</p></div>
+    <div class="step"><span class="n">3</span><h3>🔮 Menebak</h3><p>Saat ditanya, ia <b>menebak lanjutan</b> yang paling masuk akal</p></div>
+  </div>
+  <p class="sub" style="margin-top:2.6vmin">Karena itu AI bisa salah — ia <b>menebak</b>, bukan <b>mengetahui</b>. Guru yang memverifikasi.</p>
+</section>
+
+<!-- 7 AI VS GOOGLE -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Fondasi</span>
+  <h2>AI vs <span class="hl">Google</span> — bedanya?</h2>
+  <div class="vs">
+    <div class="bad"><h3>🔎 Google</h3><p>Memberi <b>daftar link</b>. Bapak/Ibu yang membaca satu per satu, merangkum sendiri.</p></div>
+    <div class="good"><h3>🤖 AI</h3><p>Memberi <b>jawaban jadi</b>: rangkuman, draf soal, kode program — siap diolah lanjut.</p></div>
+  </div>
+  <p class="sub">Analogi: Google itu <b>perpustakaan</b>, AI itu <b>asisten</b> yang sudah membacakan bukunya untuk kita.</p>
+</section>
+
+<!-- 8 PETA MANFAAT -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">🎯</span>
+  <span class="kicker">Untuk Guru Matematika</span>
+  <h2>AI bisa apa <span class="hl">untuk kita?</span></h2>
+  <ul class="bullets">
+    <li><b>👧 Personal:</b> variasi soal per level, penjelasan dengan banyak cara, remedial terarah</li>
+    <li><b>🎨 Kreatif:</b> kuis interaktif HTML, game edukasi, bahan tayang, cerita pembuka apersepsi</li>
+    <li><b>⚡ Efektif:</b> kisi-kisi &amp; rubrik otomatis, analisis daya serap, draf umpan balik per murid</li>
+  </ul>
+  <p class="sub">Tiga contoh konkretnya — satu per satu.</p>
+</section>
+
+<!-- 9 PERSONAL -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Contoh • Personal</span>
+  <h2>Satu materi, <span class="hl">tiga level</span></h2>
+  <div class="cards c3">
+    <div class="card"><div class="ico">🌱</div><h3>Penguatan</h3><p>Soal <b>konkret &amp; terbimbing</b> — mis. operasi bilangan bulat dengan garis bilangan</p></div>
+    <div class="card"><div class="ico">🌿</div><h3>Inti</h3><p>Soal <b>standar TP</b> — sesuai yang dituntut kurikulum</p></div>
+    <div class="card"><div class="ico">🌳</div><h3>Pengayaan</h3><p>Soal <b>HOTS</b> — menantang nalar, bukan sekadar hitungan</p></div>
+  </div>
+  <p class="sub">Minta ke AI: <i>"buatkan 3 level soal untuk TP ... kelas 8"</i> — 2 menit jadi.</p>
+</section>
+
+<!-- 10 KREATIF -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">🎨</span>
+  <span class="kicker">Contoh • Kreatif</span>
+  <h2>Media buatan <span class="hl">sendiri</span></h2>
+  <ul class="bullets">
+    <li><b>Kuis interaktif HTML</b> — satu file, bisa dibuka di HP murid, nilai langsung keluar</li>
+    <li><b>Game edukasi</b> — balapan, kartu, misi — anak belajar tanpa merasa belajar</li>
+    <li><b>Bahan tayang</b> — kerangka slide per pertemuan, tinggal poles</li>
+    <li>Semua ini <b>tidak butuh bisa coding</b> — AI yang menuliskan kodenya, kita yang memerintah</li>
+  </ul>
+</section>
+
+<!-- 11 EFEKTIF -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">⚡</span>
+  <span class="kicker">Contoh • Efektif</span>
+  <h2>Administrasi <span class="hl">beres</span>, waktu kembali</h2>
+  <ul class="bullets">
+    <li><b>Kisi-kisi &amp; rubrik</b> — draf otomatis, selaras dengan TP</li>
+    <li><b>Analisis hasil</b> — tempel rekap nilai, AI tunjukkan TP mana yang belum tuntas</li>
+    <li><b>Umpan balik</b> — draf kalimat membangun per level capaian murid</li>
+  </ul>
+  <p class="sub">Waktu administrasi berkurang → <b>waktu untuk murid bertambah</b>.</p>
+</section>
+
+<!-- 12 TRANSISI AGENT -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Naik Level</span>
+  <h2>AI umum itu <span class="hl">generik</span>…</h2>
+  <p class="quote">"Setiap buka AI baru, kita harus menjelaskan <b>dari nol</b> siapa kita dan mau apa. Bagaimana kalau ada AI yang <b>sudah kenal kita</b>?"<small>— kenalan dengan <b>Agent</b></small></p>
+</section>
+
+<!-- 13 APA ITU AGENT -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Agent Muse</span>
+  <h2>Apa itu <span class="hl">Agent?</span></h2>
+  <div class="cards c4">
+    <div class="card"><div class="ico">🎭</div><h3>Peran</h3><p>AI diberi <b>identitas &amp; keahlian</b>: "asisten guru matematika SMP"</p></div>
+    <div class="card"><div class="ico">🧠</div><h3>Memori</h3><p><b>Ingat</b> konteks Bapak/Ibu antar percakapan</p></div>
+    <div class="card"><div class="ico">📜</div><h3>Instruksi</h3><p>Bekerja mengikuti <b>aturan main</b> yang kita tetapkan</p></div>
+    <div class="card"><div class="ico">🛠️</div><h3>Aksi</h3><p>Bisa <b>mengerjakan</b> tugas, bukan cuma menjawab</p></div>
+  </div>
+  <p class="sub">Singkatnya: <b>AI generik + peran + memori + instruksi = Agent pribadi</b>.</p>
+</section>
+
+<!-- 14 LANGKAH MEMBUAT AGENT -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">🧠</span>
+  <span class="kicker">Praktik • muse.ai</span>
+  <h2>Membuat Agent, <span class="hl">langkahnya</span></h2>
+  <ul class="bullets">
+    <li><b>1.</b> Buka <b>muse.ai</b> di browser / unduh aplikasi Muse (Android &amp; iOS)</li>
+    <li><b>2.</b> Buat akun — ikuti verifikasi yang diminta</li>
+    <li><b>3.</b> Buat agent baru — beri <b>nama</b>, mis. "Asisten Matematika Pak Gun"</li>
+    <li><b>4.</b> Tulis <b>instruksi peran</b>: siapa dia, untuk siapa, gaya bahasa, aturan main</li>
+    <li><b>5.</b> Simpan — mulai pakai. Makin sering dipakai, makin nyambung</li>
+  </ul>
+  <p class="sub">Tampilan menu bisa berubah seiring pembaruan — <b>prinsipnya tetap sama</b>.</p>
+</section>
+
+<!-- 15 CONTOH INSTRUKSI -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Praktik • muse.ai</span>
+  <h2>Contoh instruksi <span class="hl">agent</span></h2>
+  <div class="promptbox" style="font-size:2.6vmin">"Kamu adalah asisten guru matematika SMP. Murid saya kelas 7–9, kemampuan heterogen. Setiap membuat soal: sertakan kunci berlangkah, tandai TP yang diukur, dan buatkan 3 level (penguatan–inti–pengayaan). Bahasa sederhana, contoh dari kehidupan sehari-hari. Jika saya tidak menyebut TP, tanyakan dulu."</div>
+  <p class="sub">Inilah "otak" agent Bapak/Ibu — <b>semakin jelas instruksinya, semakin tepat hasilnya</b>.</p>
+</section>
+
+<!-- 16 DEMO -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <div style="text-align:center">
+    <span class="kicker">Demo Langsung</span>
+    <h1 style="max-width:none">Membuat Agent<br>di <span class="hl">muse.ai</span> 🎬</h1>
+    <p class="sub" style="max-width:none">Saya praktikkan langsung — Bapak/Ibu bisa mengikuti dari HP/laptop</p>
+  </div>
+</section>
+
+<!-- 17 KENAPA GITHUB -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">🐙</span>
+  <span class="kicker">GitHub</span>
+  <h2>Kenapa guru butuh <span class="hl">GitHub?</span></h2>
+  <ul class="bullets">
+    <li><b>Rumah digital</b> untuk semua karya Bapak/Ibu: media, kuis, slide, modul</li>
+    <li><b>Tidak hilang</b> walau HP rusak / laptop ganti — tersimpan di cloud</li>
+    <li><b>Bisa dibagikan</b> lewat link ke murid &amp; sejawat se-Indonesia</li>
+    <li><b>Gratis</b> — dan menjadi fondasi untuk menerbitkan web sendiri</li>
+  </ul>
+</section>
+
+<!-- 18 DAFTAR GITHUB -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Praktik • GitHub</span>
+  <h2>Membuat akun <span class="hl">GitHub</span></h2>
+  <ul class="bullets">
+    <li><b>1.</b> Buka <b>github.com</b> → Sign up</li>
+    <li><b>2.</b> Isi email, buat password, pilih username (mis. <i>gunanto-matematika</i>)</li>
+    <li><b>3.</b> Verifikasi email — klik link dari GitHub</li>
+    <li><b>4.</b> Selesaikan verifikasi <i>"bukan robot"</i> bila diminta</li>
+    <li><b>5.</b> Pilih paket <b>Free</b> — cukup untuk semua kebutuhan kita</li>
+  </ul>
+  <p class="sub">Tips: pakai <b>email aktif</b> yang selalu dibuka — semua notifikasi ke sana.</p>
+</section>
+
+<!-- 19 REPO PERTAMA -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Praktik • GitHub</span>
+  <h2>Repository <span class="hl">pertama</span></h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>➕ New</h3><p>Klik <b>New repository</b> di dashboard GitHub</p></div>
+    <div class="step"><span class="n">2</span><h3>📝 Nama</h3><p>Isi nama, mis. <b>kuis-bilangan-bulat</b> — huruf kecil, tanpa spasi</p></div>
+    <div class="step"><span class="n">3</span><h3>🌍 Public</h3><p>Pilih <b>Public</b> agar bisa diterbitkan via Pages</p></div>
+    <div class="step"><span class="n">4</span><h3>⬆️ Upload</h3><p>Upload file lewat tombol <b>Add file</b> di web — tanpa aplikasi tambahan</p></div>
+  </div>
+</section>
+
+<!-- 20 PAGES -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <div class="split">
+    <div>
+      <span class="kicker">GitHub Pages</span>
+      <h2>Dari file menjadi <span class="hl">website</span></h2>
+      <ul class="bullets">
+        <li><b>GitHub Pages</b> mengubah isi repository menjadi website <b>gratis</b></li>
+        <li>Alamatnya: <b>username.github.io/nama-repo</b></li>
+        <li>Cocok untuk kuis HTML, media interaktif, dan slide seperti ini</li>
+      </ul>
+    </div>
+    <img class="illus" src="assets/fkn-publish.jpg" alt="Menerbitkan website">
+  </div>
+</section>
+
+<!-- 21 AKTIFKAN PAGES -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">🚀</span>
+  <span class="kicker">Praktik • GitHub Pages</span>
+  <h2>Mengaktifkan <span class="hl">Pages</span></h2>
+  <ul class="bullets">
+    <li><b>1.</b> Di repository → tab <b>Settings → Pages</b></li>
+    <li><b>2.</b> Source: <b>Deploy from a branch</b></li>
+    <li><b>3.</b> Branch: <b>main</b>, folder: <b>/(root)</b> → Save</li>
+    <li><b>4.</b> Tunggu 1–2 menit — situs live di <b>username.github.io/nama-repo</b></li>
+  </ul>
+  <p class="sub">Syarat penting: file utama harus bernama <b>index.html</b> di folder root.</p>
+</section>
+
+<!-- 22 STRUKTUR FILE -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Praktik • GitHub Pages</span>
+  <h2>Aturan main <span class="hl">file</span></h2>
+  <ul class="bullets">
+    <li><b>index.html</b> di root = halaman yang dibuka pertama</li>
+    <li>Gambar taruh di folder <b>assets/</b>, panggil dengan path relatif</li>
+    <li>Nama file: <b>huruf kecil, tanpa spasi</b> (kuis-1.html, bukan "Kuis 1.HTML")</li>
+    <li>Satu repository = satu karya — rapi dan mudah dibagikan</li>
+  </ul>
+</section>
+
+<!-- 23 OPTIMASI -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Optimasi GitHub Pages</span>
+  <h2>6 tips <span class="hl">optimasi</span></h2>
+  <div class="cards c3">
+    <div class="card"><div class="ico">📛</div><h3>Nama jelas</h3><p>Nama repo = <b>nama karya</b>: <i>kuis-pecahan-kelas7</i></p></div>
+    <div class="card"><div class="ico">📄</div><h3>README</h3><p>Deskripsi singkat + cara pakai di <b>README.md</b></p></div>
+    <div class="card"><div class="ico">🖼️</div><h3>Gambar ringan</h3><p>Kompres gambar agar <b>cepat dibuka</b> di HP murid</p></div>
+    <div class="card"><div class="ico">📱</div><h3>Responsif</h3><p>Pastikan tampil baik di <b>layar HP</b>, bukan cuma laptop</p></div>
+    <div class="card"><div class="ico">🔄</div><h3>Update mudah</h3><p>Upload file baru via web — Pages <b>terbit otomatis</b></p></div>
+    <div class="card"><div class="ico">🔗</div><h3>Bagikan</h3><p>Sebar link via <b>WA grup kelas</b> / LMS sekolah</p></div>
+  </div>
+</section>
+
+<!-- 24 ALUR LENGKAP -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Menyatukan Semua</span>
+  <h2>Alur lengkap: <span class="hl">AI → GitHub → Live</span></h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>🤖 Minta AI</h3><p>"Buatkan kuis HTML bilangan bulat, 10 soal + nilai otomatis"</p></div>
+    <div class="step"><span class="n">2</span><h3>🔍 Validasi</h3><p>Cek kunci jawaban &amp; kesesuaian TP <b>sebelum</b> terbit</p></div>
+    <div class="step"><span class="n">3</span><h3>🐙 Upload</h3><p>Simpan sebagai <b>index.html</b>, upload ke repository</p></div>
+    <div class="step"><span class="n">4</span><h3>🚀 Live</h3><p>Bagikan link <b>ke murid</b> — bisa dibuka dari HP</p></div>
+  </div>
+</section>
+
+<!-- 25 STUDI KASUS -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Bukti Nyata</span>
+  <h2>Presentasi <span class="hl">ini sendiri</span></h2>
+  <ul class="bullets">
+    <li>Slide ini <b>disusun dengan bantuan AI</b> — struktur, bahasa, desain</li>
+    <li>Tersimpan di <b>GitHub</b> sebagai repository <i>presentasiku</i></li>
+    <li>Tayang via <b>GitHub Pages</b> — Bapak/Ibu sedang melihat hasilnya</li>
+    <li>Belasan media saya yang lain pun lahir dari <b>alur yang sama persis</b></li>
+  </ul>
+  <p class="sub">Bukan teori — <b>ini buktinya, di depan mata</b>.</p>
+</section>
+
+<!-- 26 ETIKA -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">⚖️</span>
+  <span class="kicker">Dibahas Jujur</span>
+  <h2>Etika &amp; <span class="hl">batasan</span></h2>
+  <ul class="bullets">
+    <li><b>Validasi dulu:</b> AI bisa salah hitung — kunci jawaban <b>wajib</b> dicek manual</li>
+    <li><b>Data murid:</b> jangan masukkan nama &amp; nilai murid ke AI publik</li>
+    <li><b>Kejujuran:</b> pahami isi karya sendiri — jangan asal terbit</li>
+    <li><b>AI membantu, guru memutuskan</b> — tanggung jawab tetap di kita</li>
+  </ul>
+</section>
+
+<!-- 27 MULAI BESOK -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="kicker">Langkah Nyata</span>
+  <h2>Mulai <span class="hl">besok</span>: 3 langkah</h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>🧠 Agent</h3><p>Buat 1 agent <b>"Asisten Matematika"</b> di muse.ai</p></div>
+    <div class="step"><span class="n">2</span><h3>🐙 GitHub</h3><p>Buat akun + 1 repository untuk <b>1 karya</b></p></div>
+    <div class="step"><span class="n">3</span><h3>🚀 Terbit</h3><p>Aktifkan Pages, bagikan link ke <b>1 kelas</b> dulu</p></div>
+  </div>
+  <p class="sub">Mulai kecil, <b>mulai besok</b>. Yang penting mulai.</p>
+</section>
+
+<!-- 28 PENUTUP -->
+<section class="slide">
+  <div class="foot-brand"><img src="assets/logo-fkn.jpg" alt=""><span>FKN<br>MGMP Matematika SMP</span></div>
+  <span class="watermark">🌟</span>
+  <span class="kicker">Penutup</span>
+  <h2>AI yang cerdas<br>butuh <span class="hl">guru yang bijak</span></h2>
+  <ul class="bullets">
+    <li>Teknologi mempercepat — <b>kebijaksanaan guru</b> menentukan arahnya</li>
+    <li>Murid kita butuh guru yang <b>melek AI</b>, bukan yang takut AI</li>
+    <li>500 guru di sini = <b>500 agen perubahan</b> di sekolah masing-masing</li>
+  </ul>
+</section>
+
+<!-- 29 TERIMA KASIH -->
+<section class="slide">
+  <div class="cover-bg" style="background:url('assets/fkn-cover.jpg') center/cover no-repeat;opacity:.28"></div>
+  <div class="cover-veil"></div>
+  <div class="cover-inner" style="text-align:center">
+    <span class="kicker">Terima Kasih</span>
+    <h1 style="max-width:none">Mari berdiskusi 💬</h1>
+    <p class="sub" style="max-width:none">Sesi tanya jawab</p>
+    <div class="meta" style="justify-content:center">
+      <img src="assets/logo-fkn.jpg" alt="Logo FKN">
+      <div style="text-align:left">
+        <div class="who">Gunanto</div>
+        <div class="det">Guru Matematika — SMPN 1 Punggur</div>
+      </div>
+    </div>
+    <p class="eventline">WEBINAR FKN &nbsp;•&nbsp; GOOGLE MEET &nbsp;•&nbsp; 20 OKTOBER 2026</p>
+  </div>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="count"></div>
+<div id="hint">Navigasi: panah / spasi / klik &nbsp;•&nbsp; F = fullscreen</div>
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll(".slide"));
+  var i=0, bar=document.getElementById("bar"), count=document.getElementById("count");
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){s.classList.toggle("active",k===i)});
+    bar.style.width=((i+1)/slides.length*100)+"%";
+    count.textContent=(i+1)+" / "+slides.length;
+    if(location.hash!=="#"+(i+1)) history.replaceState(null,"","#"+(i+1));
+  }
+  document.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown") show(i+1);
+    else if(e.key==="ArrowLeft"||e.key==="PageUp") show(i-1);
+    else if(e.key==="Home") show(0);
+    else if(e.key==="End") show(slides.length-1);
+    else if(e.key.toLowerCase()==="f"){
+      if(document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    }
+  });
+  document.addEventListener("click",function(e){
+    if(e.clientX>window.innerWidth*0.72) show(i+1);
+    else if(e.clientX<window.innerWidth*0.28) show(i-1);
+  });
+  var h=parseInt((location.hash||"#1").slice(1),10);
+  show(isNaN(h)?0:h-1);
+  window.__go=show; window.__total=slides.length;
+})();
+</script>
+</body>
+</html>
