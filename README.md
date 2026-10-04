@@ -1,23 +1,20 @@
-# PGRI AI BBC — Slide Presentasi
+# Presentasiku
 
-**AI dan Literasi Digital dalam Pendidikan**
-*Praktik Pemanfaatannya untuk Menunjang Tugas Pokok Guru*
+Arsip slide presentasi **Gunanto** (Guru Matematika — SMPN 1 Punggur) sebagai narasumber/pemateri.
 
-- Pembicara: Gunanto (Guru Matematika — SMPN 1 Punggur)
-- Acara: PGRI Kabupaten Lampung Tengah, Hotel BBC Bandarjaya, Selasa 13 Oktober 2026
-- Bingkai: *AI yang cerdas butuh guru yang bijak*
+🌐 **Live:** https://gunanto.github.io/presentasiku/
 
-## Menjalankan slide
+## Struktur
 
-Buka `index.html` di browser (Chrome/Edge) — **tidak butuh internet**, semua aset tertanam di satu file.
-
-- Navigasi: panah ← → / spasi / klik kiri-kanan layar
-- `F`: fullscreen • `Home`/`End`: slide pertama/terakhir
-
-## Isi repo
-
-| File | Keterangan |
+| Path | Isi |
 |---|---|
-| `index.html` | Dek slide 22 halaman (self-contained) |
-| `assets/` | Gambar sumber + `slide-presentasi.pdf` (cadangan/cetak) |
-| `draf-materi.md` | Kerangka materi 60 menit + checklist validitas |
+| `index.html` | Landing page — daftar semua presentasi |
+| `assets-bersama/` | Logo, sampul default, dan aset yang dipakai bersama |
+| `template-deck/` | Cetakan slide kosong untuk kegiatan baru |
+| `2026-10-13-pgri-ai-digital/` | Deck: AI dan Literasi Digital dalam Pendidikan (PGRI Lampung Tengah, Hotel BBC Bandarjaya) |
+
+## Menambah presentasi baru
+
+1. Duplikat `template-deck/` → `YYYY-MM-DD-nama-acara/`
+2. Isi konten, tambah kartu di landing page
+3. Push ke `main` — GitHub Pages menayangkan otomatis

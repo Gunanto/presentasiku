@@ -3,458 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI dan Literasi Digital dalam Pendidikan — Gunanto, SMPN 1 Punggur</title>
+<title>Presentasiku — Gunanto</title>
 <style>
-  :root{
-    --navy:#0a1730; --navy2:#10234d; --card:#132a5c;
-    --red:#e63946; --gold:#ffc94d; --ink:#f5f8ff; --muted:#aeb9d8;
-    --green:#2ec4b6;
-  }
+  :root{--navy:#0a1730;--red:#e63946;--gold:#ffc94d;--ink:#f5f8ff;--muted:#aeb9d8}
   *{margin:0;padding:0;box-sizing:border-box}
-  html,body{height:100%;background:#050b1a;color:var(--ink);
-    font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
-    overflow:hidden}
-  #deck{position:fixed;inset:0}
-  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
-    padding:6vmin 7vmin;background:radial-gradient(1200px 700px at 85% 10%,#16295e 0%,var(--navy) 55%,#070f24 100%)}
-  .slide.active{display:flex}
-  .slide.cover{padding:0;justify-content:flex-end}
-  .cover-bg{position:absolute;inset:0;background:url("assets/ilustrasi-cover.jpg") center/cover no-repeat}
-  .cover-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,12,32,.25) 0%,rgba(7,12,32,.55) 45%,rgba(7,12,32,.96) 100%)}
-  .cover-inner{position:relative;padding:6vmin 7vmin}
-  .kicker{display:inline-block;align-self:flex-start;font-size:2.2vmin;letter-spacing:.28em;text-transform:uppercase;
+  body{background:radial-gradient(1200px 700px at 85% 0%,#16295e 0%,#0a1730 55%,#070f24 100%);
+    color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+    min-height:100vh;padding:6vmin 7vmin}
+  header{max-width:1100px;margin:0 auto 5vmin}
+  .kicker{display:inline-block;font-size:1.6vmin;letter-spacing:.28em;text-transform:uppercase;
     color:var(--gold);border:1px solid rgba(255,201,77,.55);border-radius:999px;
-    padding:.9vmin 2.4vmin;margin-bottom:2.4vmin;background:rgba(255,201,77,.08)}
-  h1{font-size:6.4vmin;line-height:1.08;font-weight:800;letter-spacing:-.01em;max-width:20ch}
-  h1 .hl{color:var(--gold)}
-  h1 .rd{color:var(--red)}
-  h2{font-size:4.6vmin;font-weight:800;line-height:1.15;margin-bottom:2.6vmin;max-width:26ch}
-  h2 .hl{color:var(--gold)}
-  .sub{font-size:2.9vmin;color:var(--muted);margin-top:2vmin;max-width:60ch;line-height:1.5}
-  .lead{font-size:3.4vmin;line-height:1.45;color:#dbe4ff;max-width:58ch}
-  .slide>.watermark{position:absolute;right:4vmin;top:52%;transform:translateY(-50%);
-    font-size:34vmin;line-height:1;opacity:.13;pointer-events:none;user-select:none;
-    filter:saturate(.85);z-index:0}
-  .slide>.watermark::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:48vmin;height:48vmin;border-radius:50%;z-index:-1;
-    background:radial-gradient(circle,rgba(230,57,70,.17),rgba(255,201,77,.08) 55%,transparent 72%)}
-  .slide>*{position:relative;z-index:1}
-  .slide>.cover-bg,.slide>.cover-veil{position:absolute;inset:0;z-index:0}
-  .bullets{list-style:none;margin-top:3vmin;display:flex;flex-direction:column;gap:1.8vmin;max-width:72ch}
-  .bullets li{font-size:3vmin;line-height:1.45;padding-left:4.2vmin;position:relative;color:#e8eeff}
-  .bullets li::before{content:"";position:absolute;left:0;top:1.35vmin;width:2.2vmin;height:2.2vmin;border-radius:50%;
-    background:var(--gold);box-shadow:0 0 1.6vmin rgba(255,201,77,.7)}
-  .bullets li b{color:#fff}
-  .cards{display:grid;gap:2.4vmin;margin-top:3vmin}
-  .cards.c2{grid-template-columns:1fr 1fr}
-  .cards.c3{grid-template-columns:1fr 1fr 1fr}
-  .cards.c4{grid-template-columns:repeat(4,1fr)}
-  .card{background:linear-gradient(160deg,rgba(30,52,110,.85),rgba(16,32,74,.85));
-    border:1px solid rgba(140,170,255,.22);border-radius:2.2vmin;padding:3vmin;
-    box-shadow:0 1.5vmin 4vmin rgba(0,0,0,.35)}
-  .card .ico{font-size:5vmin;margin-bottom:1.2vmin}
-  .card h3{font-size:2.9vmin;margin-bottom:1vmin;color:var(--gold)}
-  .card p{font-size:2.4vmin;line-height:1.5;color:#d7e0f8}
-  .card p b{color:#fff}
-  .quote{font-size:4.2vmin;font-weight:700;line-height:1.35;color:#fff;max-width:30ch;
-    border-left:1vmin solid var(--gold);padding-left:3vmin;margin-top:3vmin}
-  .quote small{display:block;font-size:2.4vmin;color:var(--muted);font-weight:400;margin-top:1.4vmin}
-  .steps{display:flex;gap:2vmin;margin-top:3vmin}
-  .step{flex:1;background:linear-gradient(160deg,rgba(30,52,110,.9),rgba(16,32,74,.9));
-    border:1px solid rgba(140,170,255,.25);border-radius:2.2vmin;padding:2.6vmin;text-align:center;position:relative}
-  .step .n{font-size:2.2vmin;font-weight:800;color:var(--navy);background:var(--gold);
-    width:5vmin;height:5vmin;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1.4vmin}
-  .step h3{font-size:2.8vmin;color:#fff;margin-bottom:.8vmin}
-  .step p{font-size:2.2vmin;color:var(--muted);line-height:1.45}
-  .step:not(:last-child)::after{content:"›";position:absolute;right:-2.4vmin;top:42%;font-size:5vmin;color:var(--gold)}
-  .vs{display:grid;grid-template-columns:1fr 1fr;gap:2.4vmin;margin-top:3vmin}
-  .vs .bad,.vs .good{border-radius:2.2vmin;padding:3vmin}
-  .vs .bad{background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.6)}
-  .vs .good{background:rgba(46,196,182,.1);border:1px solid rgba(46,196,182,.6)}
-  .vs h3{font-size:2.8vmin;margin-bottom:1.4vmin}
-  .vs .bad h3{color:#ff8a94}.vs .good h3{color:#7fe7dc}
-  .vs p{font-size:2.5vmin;line-height:1.55;color:#e8eeff}
-  .promptbox{font-size:2.3vmin;background:rgba(0,0,0,.35);border-radius:1.4vmin;
-    padding:1.8vmin 2.2vmin;margin-top:1.4vmin;color:#cfe0ff;font-style:italic;line-height:1.5}
-  .split{display:grid;grid-template-columns:1.05fr .95fr;gap:4vmin;align-items:center}
-  .illus{border-radius:2.4vmin;box-shadow:0 2vmin 5vmin rgba(0,0,0,.5);width:100%;object-fit:cover}
-  .meta{display:flex;align-items:center;gap:2.4vmin;margin-top:3.4vmin}
-  .meta img{width:11vmin;height:11vmin;border-radius:50%;object-fit:cover;background:#fff;padding:.6vmin}
-  .meta .who{font-size:2.7vmin;font-weight:700}
-  .meta .det{font-size:2.3vmin;color:var(--muted);margin-top:.5vmin}
-  .eventline{font-size:2.3vmin;color:var(--muted);margin-top:2.6vmin;letter-spacing:.06em}
-  .bignum{font-size:11vmin;font-weight:800;color:var(--gold);line-height:1}
-  .tag{display:inline-block;background:rgba(230,57,70,.16);border:1px solid rgba(230,57,70,.55);
-    color:#ffb3ba;font-size:2.4vmin;border-radius:1.2vmin;padding:1vmin 2vmin;margin:0 1vmin 1.4vmin 0}
-  #bar{position:fixed;left:0;bottom:0;height:.8vmin;background:linear-gradient(90deg,var(--red),var(--gold));
-    width:0;z-index:50;transition:width .3s}
-  #count{position:fixed;right:3vmin;bottom:2.4vmin;font-size:2vmin;color:var(--muted);z-index:50;letter-spacing:.15em}
-  #hint{position:fixed;left:3vmin;bottom:2.4vmin;font-size:2vmin;color:rgba(174,185,216,.55);z-index:50}
-  .foot-brand{position:absolute;top:4vmin;right:5vmin;display:flex;align-items:center;gap:1.6vmin;z-index:5}
-  .foot-brand img{width:7.5vmin;height:7.5vmin;border-radius:50%;background:#fff;padding:.5vmin;object-fit:cover}
-  .foot-brand span{font-size:2.1vmin;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;line-height:1.6;text-align:left}
-  @media print{
-    html,body{overflow:visible}
-    #deck{position:static}
-    .slide{position:relative;display:flex!important;page-break-after:always;height:100vh}
-    #bar,#count,#hint{display:none}
-  }
+    padding:1vmin 2.4vmin;margin-bottom:2vmin}
+  h1{font-size:5.4vmin;font-weight:800} h1 span{color:var(--gold)}
+  .sub{color:var(--muted);font-size:2.4vmin;margin-top:1.4vmin;max-width:70ch;line-height:1.6}
+  .grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:3vmin}
+  .card{background:linear-gradient(160deg,rgba(30,52,110,.85),rgba(16,32,74,.9));
+    border:1px solid rgba(140,170,255,.22);border-radius:2.4vmin;overflow:hidden;
+    box-shadow:0 1.5vmin 4vmin rgba(0,0,0,.35);display:flex;flex-direction:column;
+    transition:transform .2s}
+  .card:hover{transform:translateY(-.6vmin)}
+  .card img.thumb{width:100%;height:200px;object-fit:cover;object-position:top}
+  .card .body{padding:2.6vmin;display:flex;flex-direction:column;gap:1.2vmin;flex:1}
+  .date{font-size:1.9vmin;color:var(--gold);letter-spacing:.14em;text-transform:uppercase}
+  .card h2{font-size:2.7vmin;line-height:1.3}
+  .card p{font-size:2.1vmin;color:var(--muted);line-height:1.55}
+  .btn{margin-top:auto;align-self:flex-start;background:var(--gold);color:#0a1730;font-weight:700;
+    font-size:2.1vmin;padding:1.4vmin 3vmin;border-radius:999px;text-decoration:none}
+  .btn:hover{background:#ffd77a}
+  footer{max-width:1100px;margin:6vmin auto 0;color:var(--muted);font-size:2vmin;
+    border-top:1px solid rgba(140,170,255,.18);padding-top:2.4vmin}
 </style>
 </head>
 <body>
-<div id="deck">
+<header>
+  <span class="kicker">Arsip Narasumber</span>
+  <h1>Presentasi<span>ku</span></h1>
+  <p class="sub">Kumpulan slide presentasi <b>Gunanto</b> (Guru Matematika — SMPN 1 Punggur) dalam berbagai kegiatan sebagai narasumber / pemateri. Klik kartu untuk membuka slide.</p>
+</header>
+<main class="grid">
 
-  <!-- 1 COVER -->
-  <section class="slide cover active">
-    <div class="cover-bg"></div><div class="cover-veil"></div>
-    <div class="cover-inner">
-      <span class="kicker">PGRI Kabupaten Lampung Tengah</span>
-      <h1>AI dan Literasi Digital <span class="hl">dalam Pendidikan</span></h1>
-      <p class="sub">Praktik pemanfaatannya untuk menunjang tugas pokok guru &nbsp;•&nbsp; <i>AI yang cerdas butuh guru yang bijak</i></p>
-      <div class="meta">
-        <img src="assets/logo-pgri.jpg" alt="Logo PGRI">
-        <div>
-          <div class="who">Gunanto</div>
-          <div class="det">Guru Matematika — SMPN 1 Punggur</div>
-        </div>
-      </div>
-      <p class="eventline">HOTEL BBC BANDARJAYA &nbsp;•&nbsp; SELASA, 13 OKTOBER 2026</p>
+  <article class="card">
+    <img class="thumb" src="2026-10-13-pgri-ai-digital/assets/ilustrasi-cover.jpg" alt="AI dan Literasi Digital">
+    <div class="body">
+      <div class="date">13 Oktober 2026</div>
+      <h2>AI dan Literasi Digital dalam Pendidikan</h2>
+      <p>PGRI Kabupaten Lampung Tengah • Hotel BBC Bandarjaya<br>Praktik pemanfaatan AI untuk menunjang tugas pokok guru.</p>
+      <a class="btn" href="2026-10-13-pgri-ai-digital/">Buka Slide →</a>
     </div>
-  </section>
+  </article>
 
-  <!-- 2 PERKENALAN -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">👨‍🏫</span>
-    <span class="kicker">Perkenalan</span>
-    <h2>Halo, saya <span class="hl">Gunanto</span></h2>
-    <ul class="bullets">
-      <li><b>Guru Matematika</b> di SMPN 1 Punggur, Lampung Tengah</li>
-      <li>Sehari-hari memakai AI untuk membantu perangkat pembelajaran — <b>dan memvalidasinya sebelum dipakai di kelas</b></li>
-      <li>60 menit ke depan: <b>praktik, bukan teori</b> — yang bisa langsung dicoba besok pagi</li>
-    </ul>
-  </section>
+  <!-- CONTOH kartu berikutnya — duplikat blok <article> di atas untuk presentasi baru -->
 
-  <!-- 3 PETA SESI -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Peta Sesi • 60 Menit</span>
-    <h2>Perjalanan <span class="hl">kita</span> hari ini</h2>
-    <div class="cards c3">
-      <div class="card"><div class="ico">🧭</div><h3>1. Konteks</h3><p>Kenapa transformasi kompetensi &amp; literasi digital jadi tuntutan guru hari ini</p></div>
-      <div class="card"><div class="ico">🛠️</div><h3>2. Praktik</h3><p>Di mana AI membantu <b>tugas pokok guru</b>: merencanakan, melaksanakan, menilai, membimbing</p></div>
-      <div class="card"><div class="ico">🔍</div><h3>3. Validitas Kurikuler</h3><p>Jebakan AI terhadap panduan mapel — dan cara memeriksanya</p></div>
-      <div class="card"><div class="ico">👧</div><h3>4. Validitas Kontekstual</h3><p>AI tak kenal murid kita — kitalah yang menjembatani</p></div>
-      <div class="card"><div class="ico">✅</div><h3>5. Workflow Guru Bijak</h3><p>4 langkah + contoh prompt, plus peran kepala sekolah</p></div>
-      <div class="card"><div class="ico">⚖️</div><h3>6. Risiko &amp; Etika</h3><p>Dibahas jujur — lalu penutup dan ajakan bertindak</p></div>
-    </div>
-  </section>
-
-  <!-- 4 KONTEKS -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">🧭</span>
-    <span class="kicker">Konteks</span>
-    <h2>Transformasi kompetensi <span class="hl">bukan pilihan</span></h2>
-    <ul class="bullets">
-      <li>Tema besar kita hari ini: <b>transformasi kompetensi guru &amp; tenaga kependidikan</b> melalui AI, kepemimpinan, dan karakter pendidik</li>
-      <li>Murid kita sudah hidup di era AI — <b>guru tidak boleh tertinggal satu era dari muridnya</b></li>
-      <li>Tapi transformasi bukan sekadar <i>bisa memakai</i> — melainkan <b>memakai dengan benar, aman, dan bijak</b></li>
-    </ul>
-  </section>
-
-  <!-- 5 LITERASI DIGITAL -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Literasi Digital Guru</span>
-    <h2>Bukan sekadar <span class="hl">bisa memakai</span></h2>
-    <div class="cards c4">
-      <div class="card"><div class="ico">💪</div><h3>Kecakapan</h3><p>Mampu memakai AI untuk <b>tugas nyata</b>: perangkat, media, asesmen</p></div>
-      <div class="card"><div class="ico">🔒</div><h3>Keamanan</h3><p>Menjaga <b>data murid</b> &amp; data sekolah saat memakai AI</p></div>
-      <div class="card"><div class="ico">🤝</div><h3>Etika</h3><p>Jujur soal karya AI, <b>bertanggung jawab</b> atas yang dipakai di kelas</p></div>
-      <div class="card"><div class="ico">🧠</div><h3>Kebijaksanaan</h3><p><b>Kritis memvalidasi</b> — tidak telan mentah output AI</p></div>
-    </div>
-    <p class="sub">Empat ini saling mengunci. Sesi ini fokus pada yang <b>pertama</b> dan <b>keempat</b>.</p>
-  </section>
-
-  <!-- 6 FENOMENA -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">🤖</span>
-    <span class="kicker">Fenomena</span>
-    <h2>Siapa yang pernah minta AI buatkan <span class="hl">RPP / modul / LKPD?</span></h2>
-    <p class="lead">Angkat tangannya 🙋 — tidak apa-apa, saya juga.</p>
-    <ul class="bullets">
-      <li><b>Manfaatnya nyata:</b> cepat, hemat waktu, banyak ide — <b>akui, jangan dimusuhi</b></li>
-      <li><b>Polanya mengkhawatirkan:</b> <i>copy-paste, langsung pakai</i> besok pagi</li>
-      <li>AI itu seperti <b>asisten magang super cepat</b>: tidak kenal sekolah kita, tidak baca panduan mapel, dan kadang <b>mengarang dengan percaya diri</b></li>
-    </ul>
-  </section>
-
-  <!-- 7 TUPOKSI -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Tugas Pokok Guru</span>
-    <h2>Di mana AI bisa <span class="hl">membantu?</span></h2>
-    <div class="cards c4">
-      <div class="card"><div class="ico">📝</div><h3>Merencanakan</h3><p>ATP, modul ajar, LKPD, bahan ajar, bank soal</p></div>
-      <div class="card"><div class="ico">🎤</div><h3>Melaksanakan</h3><p>Bahan tayang, media interaktif, skenario diferensiasi</p></div>
-      <div class="card"><div class="ico">📊</div><h3>Menilai</h3><p>Kisi-kisi, rubrik, analisis hasil, umpan balik</p></div>
-      <div class="card"><div class="ico">🧡</div><h3>Membimbing</h3><p>Materi bimbingan, plus administrasi: surat, laporan, rangkuman</p></div>
-    </div>
-  </section>
-
-  <!-- 8 PRAKTIK 1 -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">📝</span>
-    <span class="kicker">Praktik • Merencanakan</span>
-    <h2>AI sebagai <span class="hl">drafter</span> perangkat</h2>
-    <ul class="bullets">
-      <li><b>Modul ajar / RPP:</b> kerangka kegiatan inti per JP — guru yang mengisi ruhnya</li>
-      <li><b>LKPD:</b> variasi soal per TP + kunci berlangkah — <b>selalu hitung ulang</b></li>
-      <li><b>ATP:</b> draf alur tujuan per fase — <b>wajib diselaraskan dengan CP resmi</b></li>
-      <li><b>Bank soal:</b> generator variasi soal — saring sesuai level kelas</li>
-    </ul>
-    <p class="sub">Kata kuncinya: <b>drafter</b>, bukan penulis final.</p>
-  </section>
-
-  <!-- 9 PRAKTIK 2 -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">🎤</span>
-    <span class="kicker">Praktik • Melaksanakan</span>
-    <h2>Membuat kelas <span class="hl">lebih hidup</span></h2>
-    <ul class="bullets">
-      <li><b>Bahan tayang:</b> kerangka slide per pertemuan — tinggal poles</li>
-      <li><b>Media &amp; aktivitas:</b> ide permainan, kuis, studi kasus sesuai materi</li>
-      <li><b>Diferensiasi:</b> satu materi dalam 3 level — penguatan, inti, pengayaan</li>
-      <li><b>Apersepsi:</b> cerita pembuka / masalah kontekstual yang dekat dengan anak</li>
-    </ul>
-  </section>
-
-  <!-- 10 PRAKTIK 3 -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">📊</span>
-    <span class="kicker">Praktik • Menilai</span>
-    <h2>Asesmen yang <span class="hl">selaras</span></h2>
-    <ul class="bullets">
-      <li><b>Kisi-kisi &amp; soal:</b> minta AI memetakan tiap soal ke TP-nya masing-masing</li>
-      <li><b>Rubrik:</b> draf rubrik penskoran uraian / proyek / presentasi</li>
-      <li><b>Analisis:</b> bantu membaca pola hasil — TP mana yang belum tuntas</li>
-      <li><b>Umpan balik:</b> draf kalimat umpan balik yang membangun per level capaian</li>
-    </ul>
-    <p class="sub">Syarat mutlak: <b>asesmen harus mengukur TP yang dituju</b> — ini yang paling sering dilanggar AI.</p>
-  </section>
-
-  <!-- 11 PRAKTIK 4 -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">🧡</span>
-    <span class="kicker">Praktik • Membimbing &amp; Penunjang</span>
-    <h2>Di luar <span class="hl">kelas</span> pun terbantu</h2>
-    <ul class="bullets">
-      <li><b>Membimbing:</b> materi bimbingan belajar, motivasi, konseling awal</li>
-      <li><b>Administrasi:</b> draf surat, pengumuman, laporan kegiatan, notulen rapat</li>
-      <li><b>Pengembangan diri:</b> merangkum artikel / jurnal untuk bahan belajar guru</li>
-    </ul>
-    <p class="sub">Waktu administrasi berkurang → <b>waktu untuk murid bertambah</b>. Itulah tujuan akhirnya.</p>
-  </section>
-
-  <!-- 12 TRANSISI VALIDITAS -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <div class="split">
-      <div>
-        <span class="kicker">Titik Kritis</span>
-        <h2>Semua itu <span class="hl">mudah</span>. Tapi ada satu masalah besar…</h2>
-        <p class="quote">“AI tidak membaca panduan mapel. AI tidak kenal murid kita.”<small>— masalahnya bernama <b>VALIDITAS</b></small></p>
-      </div>
-      <img class="illus" src="assets/ilustrasi-validasi.jpg" alt="Guru memvalidasi dokumen AI">
-    </div>
-  </section>
-
-  <!-- 13 JEBAKAN KURIKULER -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Validitas Kurikuler</span>
-    <h2>5 jebakan AI <span class="hl">yang paling sering</span></h2>
-    <div class="cards c2">
-      <div class="card"><div class="ico">🌀</div><h3>1. Mengarang acuan</h3><p>Kode CP salah, TP <b>bukan turunan CP</b> yang benar, fase keliru</p></div>
-      <div class="card"><div class="ico">👶</div><h3>2. Salah tahap perkembangan</h3><p>Aktivitas TK menuntut calistung formal; bahasa SD <b>terlalu abstrak</b></p></div>
-      <div class="card"><div class="ico">🎯</div><h3>3. Asesmen tak selaras</h3><p>Tujuan bilang <i>menalar</i>, soalnya cuma <i>hafalan</i></p></div>
-      <div class="card"><div class="ico">🧮</div><h3>4. Salah faktual</h3><p>Kunci matematika <b>salah hitung</b>, konsep IPA keliru, contoh tak baku</p></div>
-    </div>
-    <div style="margin-top:2vmin"><span class="tag">🎮 5. Seru tapi kosong — games yang menggembirakan tapi tidak bermakna</span></div>
-  </section>
-
-  <!-- 14 TEKNIK KURIKULER -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Validitas Kurikuler</span>
-    <h2>Tiga teknik <span class="hl">validasi</span></h2>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><h3>Jangkar resmi</h3><p>Tempel <b>CP/TP asli</b> dari panduan mapel ke dalam prompt — jangan suruh AI mengarang</p></div>
-      <div class="step"><span class="n">2</span><h3>Tabel keterlacakan</h3><p>Minta AI memetakan: kegiatan → TP berapa, soal → mengukur TP apa</p></div>
-      <div class="step"><span class="n">3</span><h3>Audit + verifikasi</h3><p>Suruh AI mengaudit dirinya sendiri — lalu <b>guru verifikasi manual</b>, hitung ulang kunci</p></div>
-    </div>
-  </section>
-
-  <!-- 15 KONTEKSTUAL -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">👧</span>
-    <span class="kicker">Validitas Kontekstual</span>
-    <h2>AI tidak kenal <span class="hl">murid kita</span></h2>
-    <ul class="bullets">
-      <li><b>TK/PAUD:</b> RPPH 30 menit untuk rentang fokus anak 10 menit; alat-bahan tak ada di sekolah</li>
-      <li><b>SD:</b> instruksi LKPD terlalu panjang — yang diuji jadi <b>kemampuan membaca</b>, bukan materinya</li>
-      <li><b>SMP/SMA:</b> soal “diskon di mal” untuk anak yang belum pernah ke mal</li>
-      <li><b>Semua jenjang:</b> RPP 2 JP dari AI yang realitanya <b>butuh 4 JP</b></li>
-    </ul>
-  </section>
-
-  <!-- 16 TEKNIK KONTEKSTUAL -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Validitas Kontekstual</span>
-    <h2>Tiga uji <span class="hl">sederhana</span></h2>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><h3>Uji baca sebagai murid</h3><p>Baca perangkat sambil membayangkan <b>anak paling lemah</b> di kelas — nyambung?</p></div>
-      <div class="step"><span class="n">2</span><h3>Uji waktu &amp; fasilitas</h3><p>Coret yang butuh alat tak tersedia; <b>potong RPP</b> yang kepadatan</p></div>
-      <div class="step"><span class="n">3</span><h3>Diferensiasi</h3><p>Minta AI buatkan 3 level — <b>guru</b> yang menentukan porsinya</p></div>
-    </div>
-  </section>
-
-  <!-- 17 WORKFLOW -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Workflow Guru Bijak</span>
-    <h2>4 langkah, <span class="hl">setiap kali</span> memakai AI</h2>
-    <div class="steps">
-      <div class="step"><span class="n">1</span><h3>⚓ Jangkar</h3><p>Siapkan <b>CP/TP resmi</b> + profil murid <b>sebelum</b> buka AI</p></div>
-      <div class="step"><span class="n">2</span><h3>✏️ Draf</h3><p>Minta AI buatkan + <b>tabel keterlacakan</b> + kunci/pedoman</p></div>
-      <div class="step"><span class="n">3</span><h3>🔍 Validasi</h3><p>Cek kurikuler <b>dan</b> kontekstual — hitung ulang, uji baca</p></div>
-      <div class="step"><span class="n">4</span><h3>👥 Uji sejawat</h3><p>Lewatkan ke <b>teman sejawat</b> sebelum dipakai di kelas</p></div>
-    </div>
-    <p class="sub" style="margin-top:2.6vmin">Membuat: <b>10 menit</b>. Memvalidasi: <b>kerja guru yang sesungguhnya</b>.</p>
-  </section>
-
-  <!-- 18 PROMPT -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Contoh Nyata</span>
-    <h2>Prompt <span class="hl">buruk</span> vs <span class="hl">baik</span></h2>
-    <div class="vs">
-      <div class="bad"><h3>❌ Buruk</h3>
-        <div class="promptbox">“Buatkan RPPH tema diriku untuk TK.”</div>
-        <div class="promptbox">“Buatkan LKPD bilangan bulat kelas 7.”</div>
-      </div>
-      <div class="good"><h3>✅ Baik</h3>
-        <div class="promptbox">“Buatkan RPPH 1 hari tema diriku, TK B (5–6 th), mengacu TP [tempel]. Durasi 60 menit, alat dari bahan bekas. Sertakan tabel keterlacakan kegiatan→TP.”</div>
-        <div class="promptbox">“Buatkan LKPD 2 JP untuk TP [tempel] fase D kelas 7. Murid heterogen, tanpa proyektor. Sertakan tabel keterlacakan soal→TP dan kunci berlangkah.”</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 19 KEPALA SEKOLAH -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="kicker">Untuk Kepala Sekolah</span>
-    <h2>Validitas bisa jadi <span class="hl">kebijakan sekolah</span></h2>
-    <div class="cards c3">
-      <div class="card"><div class="ico">📋</div><h3>SOP mini</h3><p>Perangkat buatan AI <b>wajib</b> lewat checklist validitas + review teman sejawat</p></div>
-      <div class="card"><div class="ico">🔒</div><h3>Aturan data</h3><p><b>Larang</b> memasukkan nama, nilai &amp; data pribadi murid ke AI publik</p></div>
-      <div class="card"><div class="ico">🌱</div><h3>Komunitas belajar</h3><p>Jadikan validasi perangkat AI <b>agenda rutin</b>, bukan beban tambahan</p></div>
-    </div>
-    <p class="quote">“Sekolah yang bijak tidak melarang AI — ia mengatur cara memakainya.”</p>
-  </section>
-
-  <!-- 20 RISIKO & ETIKA -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <div class="split">
-      <div>
-        <span class="kicker">Dibahas Jujur</span>
-        <h2>Risiko &amp; <span class="hl">etika</span></h2>
-        <ul class="bullets">
-          <li><b>Ketergantungan:</b> intuisi pedagogis tumpul kalau tak pernah merancang sendiri</li>
-          <li><b>Homogenisasi:</b> prompt sama → LKPD sama untuk murid yang beda-beda</li>
-          <li><b>Data murid:</b> jangan masukkan data pribadi ke AI publik</li>
-          <li><b>Kejujuran profesi:</b> guru harus bisa menjelaskan isi perangkatnya sendiri</li>
-        </ul>
-      </div>
-      <img class="illus" src="assets/ilustrasi-etika.jpg" alt="Guru melindungi murid">
-    </div>
-    <p class="quote" style="margin-top:2.4vmin">“AI tidak punya murid. Tanggung jawab validitas tidak bisa di-outsource.”</p>
-  </section>
-
-  <!-- 21 PENUTUP -->
-  <section class="slide">
-    <div class="foot-brand"><img src="assets/logo-pgri.jpg" alt=""><span>PGRI<br>Lampung Tengah</span></div>
-    <span class="watermark">🌟</span>
-    <span class="kicker">Penutup</span>
-    <h2>AI yang cerdas<br>butuh <span class="hl">guru yang bijak</span></h2>
-    <ul class="bullets">
-      <li><b>Ajakan:</b> minggu depan, coba workflow 4 langkah untuk <b>satu perangkat saja</b></li>
-      <li>Rasakan bedanya: antara <i>cepat jadi</i> dan <i>valid dipakai</i></li>
-      <li>Bagikan pengalaman ke komunitas belajar di sekolah Bapak/Ibu</li>
-    </ul>
-  </section>
-
-  <!-- 22 TERIMA KASIH -->
-  <section class="slide">
-    <div class="cover-bg" style="background:url('assets/ilustrasi-cover.jpg') center/cover no-repeat;opacity:.28"></div>
-    <div class="cover-veil"></div>
-    <div class="cover-inner" style="text-align:center">
-      <span class="kicker">Terima Kasih</span>
-      <h1 style="max-width:none">Mari berdiskusi <span class="hl">💬</span></h1>
-      <p class="sub" style="max-width:none">Sesi tanya jawab</p>
-      <div class="meta" style="justify-content:center">
-        <img src="assets/logo-pgri.jpg" alt="Logo PGRI">
-        <div style="text-align:left">
-          <div class="who">Gunanto</div>
-          <div class="det">Guru Matematika — SMPN 1 Punggur</div>
-        </div>
-      </div>
-      <p class="eventline">PGRI KABUPATEN LAMPUNG TENGAH &nbsp;•&nbsp; HOTEL BBC BANDARJAYA &nbsp;•&nbsp; 13 OKTOBER 2026</p>
-    </div>
-  </section>
-
-</div>
-<div id="bar"></div>
-<div id="count"></div>
-<div id="hint">← → / spasi navigasi &nbsp;•&nbsp; F fullscreen &nbsp;•&nbsp; cetak → PDF via Ctrl+P</div>
-<script>
-(function(){
-  var slides=[].slice.call(document.querySelectorAll(".slide"));
-  var i=0, bar=document.getElementById("bar"), count=document.getElementById("count");
-  function show(n){
-    i=Math.max(0,Math.min(slides.length-1,n));
-    slides.forEach(function(s,k){s.classList.toggle("active",k===i)});
-    bar.style.width=((i+1)/slides.length*100)+"%";
-    count.textContent=(i+1)+" / "+slides.length;
-    if(location.hash!=="#"+(i+1)) history.replaceState(null,"","#"+(i+1));
-  }
-  document.addEventListener("keydown",function(e){
-    if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown") show(i+1);
-    else if(e.key==="ArrowLeft"||e.key==="PageUp") show(i-1);
-    else if(e.key==="Home") show(0);
-    else if(e.key==="End") show(slides.length-1);
-    else if(e.key.toLowerCase()==="f"){
-      if(document.fullscreenElement) document.exitFullscreen();
-      else document.documentElement.requestFullscreen();
-    }
-  });
-  document.addEventListener("click",function(e){
-    if(e.clientX>window.innerWidth*0.72) show(i+1);
-    else if(e.clientX<window.innerWidth*0.28) show(i-1);
-  });
-  var h=parseInt((location.hash||"#1").slice(1),10);
-  show(isNaN(h)?0:h-1);
-  window.__go=show; window.__total=slides.length;
-})();
-</script>
+</main>
+<footer>Gunanto • SMPN 1 Punggur • Diperbarui Oktober 2026</footer>
 </body>
 </html>
