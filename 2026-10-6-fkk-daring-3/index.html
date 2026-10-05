@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FKK Daring Siklus 3 — Pelatihan Pembelajaran Mendalam Berbasis Kelompok Kerja</title>
+<style>
+
+  :root{
+    --navy:#0a1730; --navy2:#10234d; --card:#132a5c;
+    --red:#e63946; --gold:#ffc94d; --ink:#f5f8ff; --muted:#aeb9d8;
+    --green:#2ec4b6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#050b1a;color:var(--ink);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+    overflow:hidden}
+  #deck{position:fixed;inset:0}
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+    padding:6vmin 7vmin;background:radial-gradient(1200px 700px at 85% 10%,#16295e 0%,var(--navy) 55%,#070f24 100%)}
+  .slide.active{display:flex}
+  .slide.cover{padding:0;justify-content:flex-end}
+  .cover-bg{position:absolute;inset:0;background:url("assets/ilustrasi-cover.jpg") center/cover no-repeat}
+  .cover-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,12,32,.25) 0%,rgba(7,12,32,.55) 45%,rgba(7,12,32,.96) 100%)}
+  .cover-inner{position:relative;padding:6vmin 7vmin}
+  .kicker{display:inline-block;align-self:flex-start;font-size:2.2vmin;letter-spacing:.28em;text-transform:uppercase;
+    color:var(--gold);border:1px solid rgba(255,201,77,.55);border-radius:999px;
+    padding:.9vmin 2.4vmin;margin-bottom:2.4vmin;background:rgba(255,201,77,.08)}
+  h1{font-size:6.4vmin;line-height:1.08;font-weight:800;letter-spacing:-.01em;max-width:20ch}
+  h1 .hl{color:var(--gold)}
+  h1 .rd{color:var(--red)}
+  h2{font-size:4.6vmin;font-weight:800;line-height:1.15;margin-bottom:2.6vmin;max-width:26ch}
+  h2 .hl{color:var(--gold)}
+  .sub{font-size:2.9vmin;color:var(--muted);margin-top:2vmin;max-width:60ch;line-height:1.5}
+  .lead{font-size:3.4vmin;line-height:1.45;color:#dbe4ff;max-width:58ch}
+  .slide>.watermark{position:absolute;right:4vmin;top:52%;transform:translateY(-50%);
+    font-size:34vmin;line-height:1;opacity:.13;pointer-events:none;user-select:none;
+    filter:saturate(.85);z-index:0}
+  .slide>.watermark::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:48vmin;height:48vmin;border-radius:50%;z-index:-1;
+    background:radial-gradient(circle,rgba(230,57,70,.17),rgba(255,201,77,.08) 55%,transparent 72%)}
+  .slide>*{position:relative;z-index:1}
+  .slide>.cover-bg,.slide>.cover-veil{position:absolute;inset:0;z-index:0}
+  .bullets{list-style:none;margin-top:3vmin;display:flex;flex-direction:column;gap:1.8vmin;max-width:72ch}
+  .bullets li{font-size:3vmin;line-height:1.45;padding-left:4.2vmin;position:relative;color:#e8eeff}
+  .bullets li::before{content:"";position:absolute;left:0;top:1.35vmin;width:2.2vmin;height:2.2vmin;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 1.6vmin rgba(255,201,77,.7)}
+  .bullets li b{color:#fff}
+  .cards{display:grid;gap:2.4vmin;margin-top:3vmin}
+  .cards.c2{grid-template-columns:1fr 1fr}
+  .cards.c3{grid-template-columns:1fr 1fr 1fr}
+  .cards.c4{grid-template-columns:repeat(4,1fr)}
+  .card{background:linear-gradient(160deg,rgba(30,52,110,.85),rgba(16,32,74,.85));
+    border:1px solid rgba(140,170,255,.22);border-radius:2.2vmin;padding:3vmin;
+    box-shadow:0 1.5vmin 4vmin rgba(0,0,0,.35)}
+  .card .ico{font-size:5vmin;margin-bottom:1.2vmin}
+  .card h3{font-size:2.9vmin;margin-bottom:1vmin;color:var(--gold)}
+  .card p{font-size:2.4vmin;line-height:1.5;color:#d7e0f8}
+  .card p b{color:#fff}
+  .quote{font-size:4.2vmin;font-weight:700;line-height:1.35;color:#fff;max-width:30ch;
+    border-left:1vmin solid var(--gold);padding-left:3vmin;margin-top:3vmin}
+  .quote small{display:block;font-size:2.4vmin;color:var(--muted);font-weight:400;margin-top:1.4vmin}
+  .steps{display:flex;gap:2vmin;margin-top:3vmin}
+  .step{flex:1;background:linear-gradient(160deg,rgba(30,52,110,.9),rgba(16,32,74,.9));
+    border:1px solid rgba(140,170,255,.25);border-radius:2.2vmin;padding:2.6vmin;text-align:center;position:relative}
+  .step .n{font-size:2.2vmin;font-weight:800;color:var(--navy);background:var(--gold);
+    width:5vmin;height:5vmin;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:1.4vmin}
+  .step h3{font-size:2.8vmin;color:#fff;margin-bottom:.8vmin}
+  .step p{font-size:2.2vmin;color:var(--muted);line-height:1.45}
+  .step:not(:last-child)::after{content:"›";position:absolute;right:-2.4vmin;top:42%;font-size:5vmin;color:var(--gold)}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:2.4vmin;margin-top:3vmin}
+  .vs .bad,.vs .good{border-radius:2.2vmin;padding:3vmin}
+  .vs .bad{background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.6)}
+  .vs .good{background:rgba(46,196,182,.1);border:1px solid rgba(46,196,182,.6)}
+  .vs h3{font-size:2.8vmin;margin-bottom:1.4vmin}
+  .vs .bad h3{color:#ff8a94}.vs .good h3{color:#7fe7dc}
+  .vs p{font-size:2.5vmin;line-height:1.55;color:#e8eeff}
+  .promptbox{font-size:2.3vmin;background:rgba(0,0,0,.35);border-radius:1.4vmin;
+    padding:1.8vmin 2.2vmin;margin-top:1.4vmin;color:#cfe0ff;font-style:italic;line-height:1.5}
+  .split{display:grid;grid-template-columns:1.05fr .95fr;gap:4vmin;align-items:center}
+  .illus{border-radius:2.4vmin;box-shadow:0 2vmin 5vmin rgba(0,0,0,.5);width:100%;object-fit:cover}
+  .meta{display:flex;align-items:center;gap:2.4vmin;margin-top:3.4vmin}
+  .meta img{width:11vmin;height:11vmin;border-radius:50%;object-fit:cover;background:#fff;padding:.6vmin}
+  .meta .who{font-size:2.7vmin;font-weight:700}
+  .meta .det{font-size:2.3vmin;color:var(--muted);margin-top:.5vmin}
+  .eventline{font-size:2.3vmin;color:var(--muted);margin-top:2.6vmin;letter-spacing:.06em}
+  .bignum{font-size:11vmin;font-weight:800;color:var(--gold);line-height:1}
+  .tag{display:inline-block;background:rgba(230,57,70,.16);border:1px solid rgba(230,57,70,.55);
+    color:#ffb3ba;font-size:2.4vmin;border-radius:1.2vmin;padding:1vmin 2vmin;margin:0 1vmin 1.4vmin 0}
+  #bar{position:fixed;left:0;bottom:0;height:.8vmin;background:linear-gradient(90deg,var(--red),var(--gold));
+    width:0;z-index:50;transition:width .3s}
+  #count{position:fixed;right:3vmin;bottom:2.4vmin;font-size:2vmin;color:var(--muted);z-index:50;letter-spacing:.15em}
+  #hint{position:fixed;left:3vmin;bottom:2.4vmin;font-size:2vmin;color:rgba(174,185,216,.55);z-index:50}
+  .foot-brand{position:absolute;top:4vmin;right:5vmin;display:flex;align-items:center;gap:1.6vmin;z-index:5}
+  .foot-brand img{width:7.5vmin;height:7.5vmin;border-radius:50%;background:#fff;padding:.5vmin;object-fit:cover}
+  .foot-brand span{font-size:2.1vmin;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;line-height:1.6;text-align:left}
+  @media print{
+    html,body{overflow:visible}
+    #deck{position:static}
+    .slide{position:relative;display:flex!important;page-break-after:always;height:100vh}
+    #bar,#count,#hint{display:none}
+  }
+
+  .jrow{display:flex;gap:2vmin;align-items:flex-start;background:rgba(140,170,255,.07);border:1px solid rgba(140,170,255,.18);border-radius:1.6vmin;padding:1.8vmin 2.4vmin;margin-bottom:1.6vmin}
+  .jrow .jd{background:#ffc94d;color:#0a1730;font-weight:800;font-size:2vmin;border-radius:1vmin;padding:.8vmin 1.6vmin;white-space:nowrap;font-family:system-ui,sans-serif}
+  .jrow p{font-size:2.4vmin;color:#dbe4ff;line-height:1.55}
+  .jrow p b{color:#fff}
+  .jrow.out{background:rgba(46,196,182,.12);border-color:rgba(46,196,182,.45)}
+  .jrow.out .jd{background:#2ec4b6;color:#062a28}
+  .cover a{color:#ffc94d}
+
+</style>
+</head>
+<body>
+<div id="deck">
+
+<!-- 1 COVER -->
+<section class="slide cover active">
+  <div class="cover-bg" style="background:url('assets/ringkasan-cover.jpg') center/cover no-repeat"></div><div class="cover-veil"></div>
+  <div class="cover-inner">
+    <span class="kicker">FKK Daring • Siklus 3</span>
+    <p class="sub" style="margin-bottom:2vmin">MGMP Mapel Matematika SMP<br>Kabupaten Lampung Tengah</p>
+    <h1>Pelatihan <span class="hl">Pembelajaran Mendalam</span> Berbasis Kelompok Kerja</h1>
+    <p class="sub">Selasa, 6 Oktober 2026 • 19.35–21.15 WIB<br>Google Meet: <a href="https://meet.google.com/kyu-ooee-stx" style="color:#ffc94d">meet.google.com/kyu-ooee-stx</a></p>
+    <div class="meta">
+      <div>
+        <div class="who">Gunanto</div>
+        <div class="det">Fasilitator</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 JADWAL -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Tahapan Implementasi</span>
+  <h2>Siklus: <span class="hl">refleksi → berbagi → umpan balik</span></h2>
+  <div style="margin-top:3vmin">
+    <div class="jrow"><span class="jd">18–22 Sep</span><p><b>Refleksi hasil pembelajaran</b> sesuai PPA &amp; Standar Proses, terintegrasi media interaktif PID; <b>berbagi praktik</b>; penguatan lewat umpan balik</p></div>
+    <div class="jrow"><span class="jd">23–27 Sep</span><p><b>Refleksi di kelas</b> + refleksi pemberian umpan balik di <b>KK Sekolah</b></p></div>
+    <div class="jrow"><span class="jd">28 Sep–2 Okt</span><p><b>Iterasi ke-2</b>: implementasi PM terintegrasi <b>KKA</b> untuk mengoptimalkan pengalaman belajar interaktif di PID</p></div>
+    <div class="jrow out"><span class="jd">Output</span><p><b>RPP mapel sesuai PPA + integrasi KKA dalam media PID</b></p></div>
+  </div>
+</section>
+
+<!-- 3 PID-1 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="watermark">🖥️</span>
+  <span class="kicker">Pemanfaatan PID • 1/7</span>
+  <h2>PID itu <span class="hl">apa</span>?</h2>
+  <ul class="bullets">
+    <li><b>Layar sentuh canggih</b>: IFP, smartboard, whiteboard portabel</li>
+    <li>Membuat pembelajaran <b>visual, eksploratif, kolaboratif</b></li>
+    <li>Selaras prinsip PM: <b>berkesadaran, bermakna, menggembirakan</b></li>
+    <li>⚠️ Tanpa pemahaman tepat, perangkat semahal apa pun jadi <b>pajangan</b></li>
+  </ul>
+</section>
+
+<!-- 4 PID-2 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Pemanfaatan PID • 2/7</span>
+  <h2>Tiga jenis <span class="hl">PID</span></h2>
+  <div class="cards c3">
+    <div class="card"><div class="ico">📺</div><h3>IFP</h3><p><i>All-in-one</i>, tercanggih. Cocok <b>kelas modern</b> — mahal, kurang mobile</p></div>
+    <div class="card"><div class="ico">📽️</div><h3>Smartboard</h3><p>Berbasis <b>proyektor</b>. Lebih murah, solusi transisi — butuh perawatan</p></div>
+    <div class="card"><div class="ico">📱</div><h3>Portabel</h3><p>Tablet/pen display. Paling <b>fleksibel &amp; terjangkau</b> — cocok daring</p></div>
+  </div>
+</section>
+
+<!-- 5 PID-3 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Pemanfaatan PID • 3/7</span>
+  <h2>PID <span class="hl">vs</span> proyektor</h2>
+  <div class="vs">
+    <div class="good"><h3>🖥️ PID menang telak</h3><p>Gambar <b>4K jelas di ruang terang</b> • sentuh langsung • nyala cepat • <b>tanpa ganti lampu</b> • punya OS, bisa instal aplikasi</p></div>
+    <div class="bad"><h3>📽️ Proyektor</h3><p>Redup di ruang terang • butuh alat tambahan • perawatan lampu rutin • kalibrasi • banyak kabel</p></div>
+  </div>
+</section>
+
+<!-- 6 PID-4 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="watermark">✨</span>
+  <span class="kicker">Pemanfaatan PID • 4/7</span>
+  <h2>Fitur kunci yang <span class="hl">wajib dikuasai</span></h2>
+  <ul class="bullets">
+    <li><b>Whiteboard multi-user</b> — sampai 30 jari menulis bersamaan</li>
+    <li><b>Anotasi</b> di atas materi + <b>screen sharing</b> nirkabel</li>
+    <li>Simpan &amp; bagikan via <b>QR / PDF</b>; transkripsi tulisan tangan jadi teks</li>
+    <li>Alat bantu: penggaris, busur derajat + integrasi <b>Google for Education</b></li>
+  </ul>
+</section>
+
+<!-- 7 PID-5 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Pemanfaatan PID • 5/7</span>
+  <h2>Integrasi platform, media &amp; <span class="hl">konten</span></h2>
+  <ul class="bullets">
+    <li>Gabungkan <b>video + modul + kuis + forum</b> dalam satu sistem (LMS)</li>
+    <li>Media digital yang baik: <b>interaktif, multimedia, fleksibel, adaptif</b></li>
+    <li>Mendukung 4 proses: <b>eksplorasi → kolaborasi → refleksi → konstruksi pengetahuan</b></li>
+  </ul>
+</section>
+
+<!-- 8 PID-6 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Pemanfaatan PID • 6/7</span>
+  <h2>Bahan ajar: pakai atau <span class="hl">rancang</span>?</h2>
+  <div class="vs">
+    <div class="good"><h3>♻️ <i>By utilization</i></h3><p>Manfaatkan yang sudah ada:<br><b>GeoGebra, PhET, Google Earth, BioDigital</b></p></div>
+    <div class="good"><h3>🛠️ <i>By design</i></h3><p>Rancang sendiri sesuai kebutuhan:<br><b>Quizizz, Wordwall, Nearpod, Canva</b></p></div>
+  </div>
+  <p class="sub" style="margin-top:2.4vmin">Keduanya dirancang lewat <b>TPACK</b>: irisan pengetahuan <b>konten × pedagogi × teknologi</b>.</p>
+</section>
+
+<!-- 9 PID-7 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="watermark">💧</span>
+  <span class="kicker">Pemanfaatan PID • 7/7</span>
+  <h2>Contoh: RPP IPAS <span class="hl">"Siklus Air"</span></h2>
+  <ul class="bullets">
+    <li>Apersepsi: <b>mind map</b> ide murid langsung di PID</li>
+    <li>Tampilkan <b>dua video kontras</b>: krisis air vs pengelolaan baik</li>
+    <li>Diskusi + <b>anotasi langsung</b> di layar; penyelidikan via simulasi</li>
+    <li>Eksperimen miniatur → dokumentasi → <b>presentasi di PID</b></li>
+  </ul>
+  <p class="sub" style="margin-top:2vmin">Satu perangkat mengawal: <b>memahami → mengaplikasi → merefleksi</b>.</p>
+</section>
+
+<!-- 10 ASM-1 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 1/10</span>
+  <h2>Satu <span class="hl">siklus</span>, bukan dua kegiatan</h2>
+  <ul class="bullets">
+    <li>Asesmen memberi info untuk <b>merancang</b> pembelajaran…</li>
+    <li>…lalu dipakai lagi untuk melihat <b>efektivitasnya</b></li>
+    <li><b>Logika koding</b> mempertajam struktur berpikir</li>
+    <li><b>KA</b> dipakai kritis untuk memperluas eksplorasi</li>
+  </ul>
+</section>
+
+<!-- 11 ASM-2 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 2/10</span>
+  <h2>Alur: <span class="hl">CP → TP → ATP</span></h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>📋 CP</h3><p>Analisis <b>Capaian Pembelajaran</b> per fase</p></div>
+    <div class="step"><span class="n">2</span><h3>🎯 TP</h3><p><b>Tujuan Pembelajaran</b>: kompetensi + lingkup materi</p></div>
+    <div class="step"><span class="n">3</span><h3>🔀 ATP</h3><p><b>Diurutkan</b>, bukan dirinci — boleh beda tiap guru</p></div>
+  </div>
+</section>
+
+<!-- 12 ASM-3 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 3/10</span>
+  <h2>CP itu <span class="hl">fleksibel</span></h2>
+  <div class="cards c3">
+    <div class="card"><div class="ico">🚀</div><h3>Di atas CP</h3><p>Beri <b>pengayaan / pendalaman</b></p></div>
+    <div class="card"><div class="ico">🐢</div><h3>Belum siap</h3><p>Boleh <b>turun fase</b> sesuai kesiapan</p></div>
+    <div class="card"><div class="ico">♿</div><h3>ABK</h3><p>Pakai <b>CP Pendidikan Khusus</b></p></div>
+  </div>
+  <p class="sub" style="margin-top:2.4vmin">Satu tujuan: setiap murid belajar <b>bermakna sesuai potensinya</b>.</p>
+</section>
+
+<!-- 13 ASM-4 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="watermark">🔍</span>
+  <span class="kicker">Perencanaan &amp; Asesmen • 4/10</span>
+  <h2>Kenali murid <span class="hl">dulu</span></h2>
+  <ul class="bullets">
+    <li>Pengetahuan awal: <b>pretest / pertanyaan pemantik</b></li>
+    <li><b>Observasi</b> respons + inventarisasi <b>minat &amp; gaya belajar</b></li>
+    <li>Amati berpikir komputasional: memecah masalah besar jadi bagian kecil</li>
+    <li>Jangan lupa faktor <b>sosial-emosional</b></li>
+  </ul>
+</section>
+
+<!-- 14 ASM-5 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 5/10</span>
+  <h2>8 Dimensi Profil Lulusan: <span class="hl">pilih!</span></h2>
+  <ul class="bullets">
+    <li>Keimanan • kewargaan • <b>penalaran kritis</b> • kreativitas • <b>kolaborasi</b> • kemandirian • kesehatan • komunikasi</li>
+    <li>Pilih yang <b>paling relevan</b> dengan TP &amp; materi — bukan semuanya</li>
+    <li>Cantumkan di <b>awal perencanaan</b> sebagai kompas, bukan tempelan</li>
+  </ul>
+</section>
+
+<!-- 15 ASM-6 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 6/10</span>
+  <h2>Kerangka: <span class="hl">4 kaki</span></h2>
+  <div class="cards c4">
+    <div class="card"><div class="ico">👩‍🏫</div><h3>Praktik Pedagogis</h3><p>PjBL, PBL, inkuiri, flipped + <b>diferensiasi</b></p></div>
+    <div class="card"><div class="ico">🤝</div><h3>Kemitraan</h3><p>Murid <b>co-designer</b>; orang tua, komunitas, DUDIKA</p></div>
+    <div class="card"><div class="ico">🏫</div><h3>Lingkungan</h3><p>Aman psikologis; ruang <b>fisik fleksibel</b> + virtual</p></div>
+    <div class="card"><div class="ico">💻</div><h3>Digital</h3><p>Opsional namun <b>strategis</b></p></div>
+  </div>
+</section>
+
+<!-- 16 ASM-7 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 7/10</span>
+  <h2>Tiga pengalaman <span class="hl">belajar</span></h2>
+  <div class="steps">
+    <div class="step"><span class="n">1</span><h3>💡 Memahami</h3><p>Konstruksi pengetahuan <b>esensial–aplikatif–nilai</b> (SOLO: uni → multi)</p></div>
+    <div class="step"><span class="n">2</span><h3>🔧 Mengaplikasi</h3><p><b>Transfer</b> ke konteks nyata, menghasilkan produk (relasional)</p></div>
+    <div class="step"><span class="n">3</span><h3>🪞 Merefleksi</h3><p><b>Regulasi diri</b> &amp; metakognisi (abstrak mendalam)</p></div>
+  </div>
+</section>
+
+<!-- 17 ASM-8 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 8/10</span>
+  <h2>Tiga fungsi <span class="hl">asesmen</span></h2>
+  <div class="cards c3">
+    <div class="card"><div class="ico">🪞</div><h3><i>As</i> Learning</h3><p>Murid <b>merefleksi</b> proses belajarnya sendiri</p></div>
+    <div class="card"><div class="ico">🧭</div><h3><i>For</i> Learning</h3><p>Dasar guru <b>memperbaiki strategi</b></p></div>
+    <div class="card"><div class="ico">✅</div><h3><i>Of</i> Learning</h3><p><b>Konfirmasi</b> ketercapaian tujuan</p></div>
+  </div>
+  <p class="sub" style="margin-top:2.4vmin">Dirancang sejak awal lewat <b>KKTP</b> — ekspektasi transparan bagi murid.</p>
+</section>
+
+<!-- 18 ASM-9 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="watermark">🧭</span>
+  <span class="kicker">Perencanaan &amp; Asesmen • 9/10</span>
+  <h2>Formatif = <span class="hl">navigasi</span></h2>
+  <ul class="bullets">
+    <li>Terus-menerus, responsif, <b>tanpa pelabelan</b> kemampuan</li>
+    <li>Teknik sederhana: <b><i>minute paper</i>, <i>exit ticket</i>, 3-2-1</b>, observasi</li>
+    <li>PAUD &amp; Fase A: <b>tanpa tes tulis/lisan</b> — observasi autentik, ceklis, anekdot, karya</li>
+  </ul>
+</section>
+
+<!-- 19 ASM-10 -->
+<section class="slide">
+  <div class="foot-brand"><span>FKK<br>Siklus 3</span></div>
+  <span class="kicker">Perencanaan &amp; Asesmen • 10/10</span>
+  <h2>Sumatif tak harus <span class="hl">ujian</span></h2>
+  <ul class="bullets">
+    <li>Bisa <b>proyek, produk, video, portofolio</b> — standar kompetensi tetap sama</li>
+    <li><b>Remedial</b> = pendampingan mengulang kriteria (bukan sekadar soal lagi)</li>
+    <li><b>Pengayaan</b> = perluasan wawasan (bukan soal lebih sulit)</li>
+    <li>Rapor: <b>informatif &amp; kualitatif</b> + strategi tindak lanjut</li>
+  </ul>
+</section>
+
+<!-- 20 PENUTUP -->
+<section class="slide">
+  <div class="cover-bg" style="background:url('assets/ringkasan-cover.jpg') center/cover no-repeat;opacity:.28"></div>
+  <div class="cover-veil"></div>
+  <div class="cover-inner" style="text-align:center">
+    <span class="kicker">Terima Kasih</span>
+    <h1 style="max-width:none">Merancang <span class="hl">mendalam</span>,<br>menilai <span class="hl">bermakna</span> 🌱</h1>
+    <p class="sub" style="max-width:none">FKK Daring Siklus 3 • Selasa, 6 Oktober 2026</p>
+    <div class="meta" style="justify-content:center">
+      <div style="text-align:left">
+        <div class="who">Gunanto</div>
+        <div class="det">Fasilitator</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="count"></div>
+<div id="hint">Navigasi: panah / spasi / klik &nbsp;•&nbsp; F = fullscreen</div>
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll(".slide"));
+  var i=0, bar=document.getElementById("bar"), count=document.getElementById("count");
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach(function(s,k){s.classList.toggle("active",k===i)});
+    bar.style.width=((i+1)/slides.length*100)+"%";
+    count.textContent=(i+1)+" / "+slides.length;
+    if(location.hash!=="#"+(i+1)) history.replaceState(null,"","#"+(i+1));
+  }
+  document.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown") show(i+1);
+    else if(e.key==="ArrowLeft"||e.key==="PageUp") show(i-1);
+    else if(e.key==="Home") show(0);
+    else if(e.key==="End") show(slides.length-1);
+    else if(e.key.toLowerCase()==="f"){
+      if(document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    }
+  });
+  document.addEventListener("click",function(e){
+    if(e.clientX>window.innerWidth*0.72) show(i+1);
+    else if(e.clientX<window.innerWidth*0.28) show(i-1);
+  });
+  var h=parseInt((location.hash||"#1").slice(1),10);
+  show(isNaN(h)?0:h-1);
+  window.__go=show; window.__total=slides.length;
+})();
+</script>
+</body>
+</html>
