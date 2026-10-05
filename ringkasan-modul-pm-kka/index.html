@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ringkasan Modul Pelatihan PM-KKA — Gunanto, S.Pd.</title>
+<style>
+  :root{
+    --navy:#0a1730; --navy2:#12234d; --gold:#ffc94d; --ink:#1d2433;
+    --paper:#faf7f0; --muted:#6b7280; --line:#e5ddcf; --green:#1e7e4f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;line-height:1.75;
+    -webkit-font-smoothing:antialiased}
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;z-index:50;
+    background:linear-gradient(90deg,#e63946,var(--gold))}
+  .wrap{max-width:780px;margin:0 auto;padding:0 24px}
+  header.hero{background:linear-gradient(135deg,var(--navy),var(--navy2));
+    --x:0;
+    color:#fff;padding:64px 0 56px;position:relative;overflow:hidden}
+  header.hero::after{content:"";position:absolute;inset:0;
+    background:radial-gradient(600px 300px at 80% 20%,rgba(255,201,77,.14),transparent)}
+  .kicker{display:inline-block;font-family:system-ui,sans-serif;font-size:12px;
+    letter-spacing:.28em;text-transform:uppercase;color:var(--gold);
+    border:1px solid rgba(255,201,77,.5);border-radius:999px;
+    padding:7px 18px;margin-bottom:22px}
+  header.hero h1{font-size:clamp(30px,5vw,44px);line-height:1.25;font-weight:700}
+  header.hero h1 em{color:var(--gold);font-style:normal}
+  header.hero .sub{margin-top:14px;color:#c9d4f2;font-size:17px;max-width:640px}
+  .byline{margin-top:26px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+    font-family:system-ui,sans-serif;font-size:14px;color:#9fb0d8}
+  .byline b{color:#fff}
+  nav.toc{background:#fff;border:1px solid var(--line);border-radius:14px;
+    margin:-30px auto 0;max-width:780px;padding:20px 26px;position:relative;z-index:5;
+    box-shadow:0 10px 30px rgba(10,23,48,.08);font-family:system-ui,sans-serif}
+  nav.toc p{font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:10px}
+  nav.toc ol{list-style:none;display:flex;flex-direction:column;gap:8px}
+  nav.toc a{color:var(--navy);text-decoration:none;font-size:15px;font-weight:600}
+  nav.toc a:hover{color:#b45309}
+  nav.toc a span.n{display:inline-block;width:30px;height:30px;line-height:30px;
+    text-align:center;background:var(--navy);color:var(--gold);border-radius:50%;
+    font-size:14px;margin-right:10px}
+  main{padding:56px 0 30px}
+  section.block{margin-bottom:64px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px;
+    border-bottom:3px solid var(--gold);padding-bottom:12px}
+  .sec-head .num{font-family:system-ui,sans-serif;background:var(--navy);color:var(--gold);
+    font-weight:800;font-size:15px;border-radius:10px;padding:6px 14px;white-space:nowrap}
+  .sec-head h2{font-size:clamp(22px,3.6vw,30px);color:var(--navy);line-height:1.35}
+  .sec-desc{color:var(--muted);font-style:italic;margin:10px 0 26px;font-size:16px}
+  /* jadwal */
+  .timeline{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;background:#fff}
+  .trow{display:grid;grid-template-columns:200px 1fr}
+  .trow + .trow{border-top:1px solid var(--line)}
+  .tdate{background:var(--navy);color:var(--gold);font-family:system-ui,sans-serif;
+    font-weight:700;font-size:14.5px;padding:20px;display:flex;align-items:center}
+  .trow.output .tdate{background:var(--green);color:#fff}
+  .tdesc{padding:20px 22px;font-size:16.5px}
+  .tdesc b{color:var(--navy)}
+  /* poin */
+  .poin{background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:24px 26px;margin-bottom:18px;box-shadow:0 4px 14px rgba(10,23,48,.05)}
+  .poin h3{font-size:19px;color:var(--navy);margin-bottom:8px;line-height:1.45}
+  .poin h3 .pn{display:inline-block;min-width:34px;height:34px;line-height:34px;
+    text-align:center;background:linear-gradient(135deg,#e63946,#ff7a5c);color:#fff;
+    border-radius:50%;font-size:16px;margin-right:10px;font-family:system-ui,sans-serif}
+  .poin p{font-size:16.5px;color:#333c52}
+  .poin p + p{margin-top:10px}
+  .poin b{color:var(--navy)}
+  footer{background:var(--navy);color:#9fb0d8;padding:40px 0 60px;
+    font-family:system-ui,sans-serif;font-size:14px}
+  footer b{color:#fff}
+  .toolbar{position:fixed;bottom:22px;right:22px;z-index:50;display:flex;gap:10px}
+  .toolbar button{border:none;cursor:pointer;font-family:system-ui,sans-serif;
+    font-size:14px;font-weight:700;padding:12px 20px;border-radius:999px;
+    background:var(--navy);color:#fff;box-shadow:0 8px 24px rgba(10,23,48,.35)}
+  .toolbar button:hover{background:var(--navy2)}
+  @media(max-width:640px){
+    .trow{grid-template-columns:1fr}
+    .tdate{padding:14px 20px}
+  }
+  @media print{
+    .toolbar,#progress,nav.toc{display:none}
+    header.hero{padding:40px 0}
+    body{background:#fff}
+    .poin,.timeline{box-shadow:none;break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="hero">
+  <div class="hero-bg" style="position:absolute;inset:0;background:url('assets/ringkasan-cover.jpg') center/cover;opacity:.16"></div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <span class="kicker">Ringkasan Modul</span>
+    <h1>Pelatihan <em>Pembelajaran Mendalam</em><br>serta Koding &amp; Kecerdasan Artifisial</h1>
+    <p class="sub">Jadwal tahapan implementasi, pemanfaatan Papan Interaktif Digital, serta perencanaan &amp; asesmen pembelajaran — diringkas dari modul resmi Kemendikdasmen G.01.2026.</p>
+    <div class="byline"><span>Disusun oleh <b>Gunanto, S.Pd.</b></span><span>•</span><span>5 Oktober 2026</span></div>
+  </div>
+</header>
+
+<nav class="toc">
+  <p>Daftar Isi</p>
+  <ol>
+    <li><a href="#jadwal"><span class="n">1</span>Jadwal Tahapan Implementasi Pelatihan PM-KKA</a></li>
+    <li><a href="#pid"><span class="n">2</span>Pemanfaatan Media / Papan Interaktif Digital — 7 Poin</a></li>
+    <li><a href="#asesmen"><span class="n">3</span>Perencanaan &amp; Asesmen Pembelajaran — 10 Poin</a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+
+<!-- ============ BAGIAN 1 ============ -->
+<section class="block" id="jadwal">
+  <div class="sec-head"><span class="num">Bagian 1</span><h2>Jadwal Tahapan Implementasi Pelatihan PM-KKA</h2></div>
+  <p class="sec-desc">Siklus berulang: refleksi → berbagi praktik → umpan balik, dari level umum hingga komunitas sekolah.</p>
+  <div class="timeline">
+    <div class="trow">
+      <div class="tdate">18–22 September 2026</div>
+      <div class="tdesc"><b>Refleksi hasil pembelajaran</b> sesuai PPA dan Standar Proses, terintegrasi media interaktif PID; <b>berbagi praktik</b>; penguatan melalui <b>pemberian umpan balik</b>.</div>
+    </div>
+    <div class="trow">
+      <div class="tdate">23–27 September 2026</div>
+      <div class="tdesc"><b>Refleksi hasil pembelajaran</b> sesuai PPA dan Standar Proses, terintegrasi media interaktif PID <b>di kelas</b>; refleksi pemberian umpan balik di <b>KK Sekolah</b>.</div>
+    </div>
+    <div class="trow">
+      <div class="tdate">28 Sept – 2 Okt 2026</div>
+      <div class="tdesc"><b>Iterasi ke-2</b> pasca penguatan: implementasi PM sesuai Standar Proses &amp; Panduan Pembelajaran Asesmen, terintegrasi <b>KKA</b> untuk mengoptimalkan pengalaman belajar interaktif di PID.</div>
+    </div>
+    <div class="trow output">
+      <div class="tdate">Output</div>
+      <div class="tdesc"><b>RPP mapel sesuai PPA + integrasi KKA dalam media PID.</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BAGIAN 2 ============ -->
+<section class="block" id="pid">
+  <div class="sec-head"><span class="num">Bagian 2</span><h2>Pemanfaatan Media / Papan Interaktif Digital</h2></div>
+  <p class="sec-desc">Disarikan dari Modul G.01.2026 "Pemanfaatan Media atau Papan Interaktif Digital".</p>
+
+  <div class="poin"><h3><span class="pn">1</span>PID itu apa &amp; kenapa penting</h3>
+  <p>Papan Interaktif Digital adalah <b>layar sentuh canggih</b> (IFP, smartboard, whiteboard portabel) yang membuat pembelajaran visual, eksploratif, dan kolaboratif — selaras dengan prinsip pembelajaran mendalam: <b>berkesadaran, bermakna, menggembirakan</b>. Peringatan modulnya tegas: tanpa pemahaman yang tepat, perangkat semahal apa pun bisa jadi pajangan.</p></div>
+
+  <div class="poin"><h3><span class="pn">2</span>Tiga jenis PID</h3>
+  <p><b>IFP</b> (all-in-one, tercanggih, cocok untuk kelas modern — tapi mahal dan kurang mobile); <b>smartboard berbasis proyektor</b> (lebih murah, solusi transisi dari papan konvensional, tapi butuh perawatan lampu &amp; kalibrasi); dan <b>papan digital portabel/tablet</b> (paling fleksibel &amp; terjangkau, cocok untuk daring, tapi layarnya kecil).</p></div>
+
+  <div class="poin"><h3><span class="pn">3</span>PID vs proyektor</h3>
+  <p>PID menang telak: gambar <b>4K tetap jelas di ruang terang</b>, sentuh langsung tanpa alat tambahan, nyala cepat, minim perawatan (tanpa ganti lampu), dan punya OS sendiri sehingga bisa instal aplikasi.</p></div>
+
+  <div class="poin"><h3><span class="pn">4</span>Fitur kunci yang wajib dikuasai</h3>
+  <p>Whiteboard digital <b>multi-user</b> (sampai 30 jari menulis bersamaan), anotasi di atas materi, screen sharing nirkabel, simpan &amp; bagikan via QR/PDF, transkripsi tulisan tangan jadi teks, grafik pintar, plus alat bantu (penggaris, busur derajat) dan integrasi Google for Education.</p></div>
+
+  <div class="poin"><h3><span class="pn">5</span>Integrasi platform, media &amp; konten</h3>
+  <p>Gabungkan video, modul, kuis, dan forum diskusi dalam satu sistem (LMS) agar pembelajaran sistematis. Media digital yang baik itu <b>interaktif, multimedia, fleksibel, adaptif</b> — dan fungsinya mendukung empat proses: <b>eksplorasi, kolaborasi, refleksi, konstruksi pengetahuan</b>.</p></div>
+
+  <div class="poin"><h3><span class="pn">6</span>Bahan ajar: <i>by utilization</i> vs <i>by design</i> + TPACK</h3>
+  <p><i>By utilization</i>: manfaatkan yang sudah ada (GeoGebra, PhET, Google Earth, BioDigital). <i>By design</i>: rancang sendiri (Quizizz, Wordwall, Nearpod, Canva). Keduanya dirancang lewat kerangka <b>TPACK</b>: irisan pengetahuan konten, pedagogi, dan teknologi.</p></div>
+
+  <div class="poin"><h3><span class="pn">7</span>Contoh nyata: RPP IPAS "Siklus Air" dengan PBL</h3>
+  <p>Apersepsi lewat mind map di PID, tampilkan dua video kontras (krisis air vs pengelolaan baik), murid berdiskusi &amp; beranotasi langsung di layar, penyelidikan via simulasi + eksperimen miniatur, dokumentasi difoto lalu dipresentasikan di PID. Satu perangkat mengawal tiga tahap: <b>memahami → mengaplikasi → merefleksi</b>.</p></div>
+</section>
+
+<!-- ============ BAGIAN 3 ============ -->
+<section class="block" id="asesmen">
+  <div class="sec-head"><span class="num">Bagian 3</span><h2>Perencanaan &amp; Asesmen Pembelajaran Mendalam</h2></div>
+  <p class="sec-desc">Disarikan dari Modul "Perencanaan Pembelajaran dan Asesmen Pembelajaran Mendalam".</p>
+
+  <div class="poin"><h3><span class="pn">1</span>Perencanaan &amp; asesmen itu satu siklus</h3>
+  <p>Asesmen memberi informasi untuk <b>merancang</b> pembelajaran, lalu dipakai lagi untuk melihat <b>efektivitasnya</b> — bukan dua kegiatan terpisah. Logika koding dipakai untuk mempertajam struktur berpikir, KA dipakai secara kritis untuk memperluas eksplorasi.</p></div>
+
+  <div class="poin"><h3><span class="pn">2</span>Alur penyusunan: CP → TP → ATP</h3>
+  <p>Analisis <b>Capaian Pembelajaran</b> per fase, turunkan jadi <b>Tujuan Pembelajaran</b> (2 komponen: <b>kompetensi</b> + <b>lingkup materi</b>), lalu urutkan jadi <b>Alur Tujuan Pembelajaran</b>. ATP itu TP yang <b>diurutkan, bukan dirinci</b> — dan boleh berbeda antar guru maupun mapel.</p></div>
+
+  <div class="poin"><h3><span class="pn">3</span>CP itu fleksibel</h3>
+  <p>Murid di atas CP bisa diberi <b>pengayaan/pendalaman</b>; yang belum siap bisa <b>turun fase</b>; ABK memakai CP Pendidikan Khusus. Tujuannya satu: setiap murid mengalami pembelajaran yang bermakna sesuai potensinya.</p></div>
+
+  <div class="poin"><h3><span class="pn">4</span>Identifikasi kebutuhan dulu sebelum merancang</h3>
+  <p>Cek pengetahuan awal (pretest/pertanyaan pemantik), observasi respons murid, inventarisasi minat &amp; gaya belajar, amati kemampuan berpikir komputasional (memecah masalah besar jadi bagian-bagian kecil), plus perhatikan faktor sosial-emosional.</p></div>
+
+  <div class="poin"><h3><span class="pn">5</span>Delapan Dimensi Profil Lulusan — pilih, jangan semua</h3>
+  <p>Keimanan, kewargaan, penalaran kritis, kreativitas, kolaborasi, kemandirian, kesehatan, komunikasi. Pilih yang <b>paling relevan</b> dengan TP dan karakteristik materi; cantumkan di awal perencanaan sebagai kompas, bukan tempelan.</p></div>
+
+  <div class="poin"><h3><span class="pn">6</span>Kerangka pembelajaran punya 4 kaki</h3>
+  <p><b>Praktik pedagogis</b> (PjBL, PBL, inkuiri, flipped classroom + diferensiasi konten–proses–produk–lingkungan); <b>kemitraan</b> (murid sebagai <i>co-designer</i>, libatkan orang tua/komunitas/DUDIKA); <b>lingkungan belajar</b> (budaya aman secara psikologis, ruang fisik fleksibel, ruang virtual); dan <b>pemanfaatan digital</b> yang opsional namun strategis.</p></div>
+
+  <div class="poin"><h3><span class="pn">7</span>Tiga pengalaman belajar berurutan</h3>
+  <p><b>Memahami</b> (mengkonstruksi pengetahuan esensial–aplikatif–nilai; taksonomi SOLO: unistruktural → multistruktural) → <b>mengaplikasi</b> (relasional; transfer ke konteks nyata, menghasilkan produk) → <b>merefleksi</b> (abstrak mendalam; regulasi diri &amp; metakognisi).</p></div>
+
+  <div class="poin"><h3><span class="pn">8</span>Tiga fungsi asesmen</h3>
+  <p><i>Assessment <b>as</b> learning</i> (melatih murid merefleksi proses belajarnya sendiri), <i>assessment <b>for</b> learning</i> (dasar guru memperbaiki strategi), <i>assessment <b>of</b> learning</i> (konfirmasi ketercapaian). Dirancang sejak awal lewat <b>KKTP</b> agar ekspektasi transparan bagi murid.</p></div>
+
+  <div class="poin"><h3><span class="pn">9</span>Formatif itu navigasi, bukan vonis</h3>
+  <p>Dilakukan terus-menerus, responsif, <b>tanpa pelabelan</b> kemampuan. Tekniknya bisa sederhana: <i>minute paper</i>, <i>exit ticket</i>, 3-2-1, observasi. Khusus PAUD &amp; Fase A: <b>tanpa tes tulis/lisan</b> — pakai observasi autentik, ceklis, catatan anekdot, dan hasil karya.</p></div>
+
+  <div class="poin"><h3><span class="pn">10</span>Sumatif tidak harus ujian akhir semester</h3>
+  <p>Bisa berupa proyek, produk, video, atau portofolio — yang penting standar kompetensinya sama. <b>Remedial</b> = pendampingan mengulang kriteria yang belum tercapai (bukan sekadar memberi soal lagi); <b>pengayaan</b> = perluasan wawasan (bukan soal yang lebih sulit). Rapor pun bukan sekadar angka — harus informatif, kualitatif, plus strategi tindak lanjut.</p></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Sumber:</b> Modul G.01.2026 "Pemanfaatan Media atau Papan Interaktif Digital" dan Modul "Perencanaan Pembelajaran dan Asesmen Pembelajaran Mendalam" — Pelatihan Pembelajaran Mendalam serta Koding dan Kecerdasan Artifisial bagi Pendidik, Kemendikdasmen, 2026.</p>
+    <p style="margin-top:8px">Ringkasan disusun oleh <b>Gunanto, S.Pd.</b> • 5 Oktober 2026</p>
+  </div>
+</footer>
+
+<div class="toolbar"><button onclick="window.print()">🖨️ Cetak / PDF</button></div>
+
+<script>
+(function(){
+  var bar=document.getElementById("progress");
+  function upd(){
+    var h=document.documentElement;
+    var p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+    bar.style.width=p+"%";
+  }
+  document.addEventListener("scroll",upd,{passive:true});upd();
+})();
+</script>
+</body>
+</html>
