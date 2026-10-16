@@ -9,7 +9,7 @@
   :root{
     --navy:#0a1730; --navy2:#10234d; --card:#132a5c;
     --red:#e63946; --gold:#ffc94d; --ink:#f5f8ff; --muted:#aeb9d8;
-    --green:#2ec4b6;
+    --green:#2ec4b6; --content-left:clamp(4.75rem,15vmin,14rem);
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%;background:#050b1a;color:var(--ink);
@@ -17,9 +17,12 @@
     overflow:hidden}
   #deck{position:fixed;inset:0}
   .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
-    padding:6vmin 7vmin;background:radial-gradient(1200px 700px at 85% 10%,#16295e 0%,var(--navy) 55%,#070f24 100%)}
+    padding:6vmin 7vmin 6vmin var(--content-left);background:radial-gradient(1200px 700px at 85% 10%,#16295e 0%,var(--navy) 55%,#070f24 100%)}
   .slide.active{display:flex}
   .slide.cover{padding:0;justify-content:flex-end}
+  .slide.cover .cover-inner{padding:6vmin 7vmin;text-align:center}
+  .slide.cover h1,.slide.cover .sub{margin-left:auto;margin-right:auto}
+  .slide.cover .meta{justify-content:center}
   .cover-bg{position:absolute;inset:0;background:url("assets/ilustrasi-cover.jpg") center/cover no-repeat}
   .cover-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,12,32,.25) 0%,rgba(7,12,32,.55) 45%,rgba(7,12,32,.96) 100%)}
   .cover-inner{position:relative;padding:6vmin 7vmin}
@@ -91,6 +94,15 @@
     width:0;z-index:50;transition:width .3s}
   #count{position:fixed;right:3vmin;bottom:2.4vmin;font-size:2vmin;color:var(--muted);z-index:50;letter-spacing:.15em}
   #hint{position:fixed;left:3vmin;bottom:2.4vmin;font-size:2vmin;color:rgba(174,185,216,.55);z-index:50}
+  .slide-nav{position:fixed;inset:50% 2.4vmin auto;display:flex;justify-content:space-between;align-items:center;
+    transform:translateY(-50%);z-index:60;pointer-events:none}
+  .slide-nav button{width:clamp(3rem,7vmin,5rem);height:clamp(3rem,7vmin,5rem);padding:0;display:grid;place-items:center;
+    border:.32vmin solid #25c52b;border-radius:50%;background:rgba(5,27,18,.62);box-shadow:0 0 0 .32vmin #fff,0 .5vmin 1.5vmin rgba(0,0,0,.3);
+    color:#fff;cursor:pointer;pointer-events:auto;touch-action:manipulation;transition:transform .18s,background .18s,opacity .18s}
+  .slide-nav button:hover{background:#1dbb27;transform:scale(1.08)}
+  .slide-nav button:focus-visible{outline:.35vmin solid #fff;outline-offset:.45vmin}
+  .slide-nav button:disabled{opacity:.32;cursor:default;transform:none}
+  .slide-nav svg{width:58%;height:58%;fill:currentColor}
   .foot-brand{position:absolute;top:4vmin;right:5vmin;display:flex;align-items:center;gap:1.6vmin;z-index:5}
   .foot-brand img{width:7.5vmin;height:7.5vmin;border-radius:50%;background:#fff;padding:.5vmin;object-fit:cover}
   .foot-brand span{font-size:2.1vmin;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;line-height:1.6;text-align:left}
@@ -98,7 +110,7 @@
     html,body{overflow:visible}
     #deck{position:static}
     .slide{position:relative;display:flex!important;page-break-after:always;height:100vh}
-    #bar,#count,#hint{display:none}
+    #bar,#count,#hint,.slide-nav{display:none}
   }
 
 </style>
@@ -232,6 +244,10 @@
 </section>
 
 </div>
+<nav class="slide-nav" aria-label="Navigasi slide">
+  <button type="button" id="prev-slide" aria-label="Slide sebelumnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10.5H9.7l4.2-4.2L12 4.4 4.6 12l7.3 7.6 1.9-1.9-4.1-4.2H20z"/></svg></button>
+  <button type="button" id="next-slide" aria-label="Slide berikutnya"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5h10.3l-4.2-4.2L12 4.4l7.4 7.6-7.3 7.6-1.9-1.9 4.1-4.2H4z"/></svg></button>
+</nav>
 <div id="bar"></div>
 <div id="count"></div>
 <div id="hint">Navigasi: panah / spasi / klik &nbsp;&bull;&nbsp; F = fullscreen</div>
@@ -239,13 +255,18 @@
 (function(){
   var slides=[].slice.call(document.querySelectorAll(".slide"));
   var i=0, bar=document.getElementById("bar"), count=document.getElementById("count");
+  var prev=document.getElementById("prev-slide"), next=document.getElementById("next-slide");
   function show(n){
     i=Math.max(0,Math.min(slides.length-1,n));
     slides.forEach(function(s,k){s.classList.toggle("active",k===i)});
     bar.style.width=((i+1)/slides.length*100)+"%";
     count.textContent=(i+1)+" / "+slides.length;
+    prev.disabled=i===0;
+    next.disabled=i===slides.length-1;
     if(location.hash!=="#"+(i+1)) history.replaceState(null,"","#"+(i+1));
   }
+  prev.addEventListener("click",function(e){e.stopPropagation();show(i-1)});
+  next.addEventListener("click",function(e){e.stopPropagation();show(i+1)});
   document.addEventListener("keydown",function(e){
     if(e.key==="ArrowRight"||e.key===" "||e.key==="PageDown") show(i+1);
     else if(e.key==="ArrowLeft"||e.key==="PageUp") show(i-1);
