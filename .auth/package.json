@@ -1,0 +1,9 @@
+{
+  "name": "gezyslide-auth",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Server-side token authentication for Gezyslide",
+  "dependencies": {
+    "express": "5.1.0"
+  }
+}

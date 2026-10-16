@@ -18,3 +18,15 @@ Arsip slide presentasi **Gunanto** (Guru Matematika — SMPN 1 Punggur) sebagai 
 1. Duplikat `template-deck/` → `YYYY-MM-DD-nama-acara/`
 2. Isi konten, tambah kartu di landing page
 3. Push ke `main` — GitHub Pages menayangkan otomatis
+
+## Proteksi token
+
+Landing page dan halaman login tetap publik. Semua path lain di VPS dilindungi oleh Nginx dan service token, termasuk folder slide baru. Thumbnail yang dipakai landing page dikecualikan secara eksplisit agar kartu tetap tampil.
+
+Source service auth, unit systemd, konfigurasi Nginx, dan script deploy ada di `.auth/` dan `deploy.sh`. Nilai token tetap berada di `tokenslide.md` lokal dan `/etc/gezyslide-auth.env` di VPS; keduanya tidak dikirim ke GitHub.
+
+Deploy dari checkout lokal dengan:
+
+```bash
+./deploy.sh
+```

@@ -1,0 +1,23 @@
+# Token dan kredensial akses
+tokenslide.md
+**/*token*.md
+**/*token*.txt
+**/*token*.json
+*.credentials
+*.secret
+credentials/
+secrets/
+
+# Berkas environment
+.env
+.env.*
+!.env.example
+
+# Private key dan sertifikat
+*.key
+*.pem
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.keytab
