@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Presentasiku</title>
+<style>
+  :root{color-scheme:dark;--bg:#071126;--panel:#10234d;--line:rgba(140,170,255,.3);--ink:#f5f8ff;--muted:#aeb9d8;--gold:#ffc94d;--red:#ffb3ba}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;padding:2rem;background:radial-gradient(1200px 700px at 85% 0%,#16295e 0%,var(--bg) 60%);color:var(--ink);font:16px/1.5 "Segoe UI",system-ui,sans-serif}
+  main{width:min(100%,1000px);margin:auto}
+  .panel{margin-top:1.5rem;padding:1.25rem;border:1px solid var(--line);border-radius:1rem;background:rgba(16,35,77,.86)}
+  h1,h2{line-height:1.2} h1{margin:0} h2{margin:0 0 1rem;font-size:1.25rem}
+  p{color:var(--muted)}
+  input,textarea{width:100%;padding:.7rem .8rem;border:1px solid var(--line);border-radius:.55rem;background:#08142e;color:var(--ink);font:inherit}
+  textarea{min-height:5rem;resize:vertical}
+  input:focus,textarea:focus{outline:.15rem solid var(--gold);outline-offset:.1rem}
+  label{display:block;margin:.7rem 0 .3rem;color:var(--muted);font-size:.9rem}
+  button{border:0;border-radius:999px;padding:.7rem 1rem;background:var(--gold);color:#0a1730;font:700 .95rem/1 "Segoe UI",system-ui,sans-serif;cursor:pointer}
+  button.secondary{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  button.danger{background:#6d2430;color:#fff}
+  button:hover{filter:brightness(1.08)}
+  .actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1rem}
+  .login{max-width:26rem;margin:8vh auto}
+  .token-row,.card-row{margin-top:1rem;padding:1rem;border:1px solid var(--line);border-radius:.75rem}
+  .token-row{display:grid;grid-template-columns:minmax(12rem,1fr) minmax(10rem,1fr) auto;gap:.7rem;align-items:end}
+  .card-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.2rem 1rem}
+  .card-row .wide{grid-column:1/-1}
+  .card-row .row-actions{display:flex;justify-content:space-between;align-items:center;grid-column:1/-1;margin-top:.8rem}
+  .check{display:flex;align-items:center;gap:.5rem;color:var(--ink)}
+  .check input{width:auto}
+  #status,#login-error{min-height:1.4rem;color:var(--gold)}
+  #status.error,#login-error{color:var(--red)}
+  [hidden]{display:none!important}
+  @media(max-width:650px){body{padding:1rem}.token-row,.card-row{display:block}.token-row button{margin-top:.7rem}.row-actions{gap:.7rem;flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<main id="login-view" class="login">
+  <h1>Admin Presentasiku</h1>
+  <p>Masukkan password admin untuk mengelola token dan card.</p>
+  <form id="login-form" class="panel">
+    <label for="admin-password">Password admin</label>
+    <input id="admin-password" type="password" autocomplete="current-password" required>
+    <p id="login-error"></p>
+    <button type="submit">Masuk</button>
+  </form>
+</main>
+
+<main id="app-view" hidden>
+  <header>
+    <h1>Kelola Presentasiku</h1>
+    <div class="actions"><button id="logout" class="secondary" type="button">Keluar</button><a href="/">Kembali ke landing</a></div>
+  </header>
+  <section class="panel">
+    <h2>Token</h2>
+    <p>Token pada path yang terdaftar dipakai khusus untuk path tersebut. Path baru memakai salah satu token terdaftar sampai diberi mapping khusus.</p>
+    <div id="token-rows"></div>
+    <div class="actions"><button id="add-token" class="secondary" type="button">Tambah token</button></div>
+  </section>
+  <section class="panel">
+    <h2>Card landing</h2>
+    <p>Urutan card mengikuti urutan di bawah. Card nonaktif tidak ditampilkan di landing.</p>
+    <div id="card-rows"></div>
+    <div class="actions"><button id="add-card" class="secondary" type="button">Tambah card</button></div>
+  </section>
+  <div class="actions"><button id="save" type="button">Simpan perubahan</button></div>
+  <p id="status"></p>
+</main>
+
+<script>
+(function(){
+  var loginView=document.getElementById("login-view");
+  var appView=document.getElementById("app-view");
+  var loginForm=document.getElementById("login-form");
+  var loginError=document.getElementById("login-error");
+  var tokenRows=document.getElementById("token-rows");
+  var cardRows=document.getElementById("card-rows");
+  var status=document.getElementById("status");
+  var state={tokens:{},cards:[]};
+
+  function request(url, options){
+    return fetch(url,Object.assign({credentials:"same-origin",headers:{"Content-Type":"application/json"}},options||{}));
+  }
+
+  function field(parent, labelText, value, key, wide, area){
+    var wrapper=document.createElement("label");
+    if(wide) wrapper.className="wide";
+    wrapper.textContent=labelText;
+    var input=document.createElement(area?"textarea":"input");
+    input.value=value||"";
+    input.dataset.field=key;
+    wrapper.appendChild(input);
+    parent.appendChild(wrapper);
+  }
+
+  function renderTokens(){
+    tokenRows.replaceChildren();
+    Object.entries(state.tokens).forEach(function(entry){
+      var row=document.createElement("div");
+      row.className="token-row";
+      field(row,"Path folder",entry[0],"path",false,false);
+      field(row,"Token",entry[1],"token",false,false);
+      var remove=document.createElement("button");
+      remove.type="button";remove.className="danger";remove.textContent="Hapus";
+      remove.addEventListener("click",function(){row.remove()});
+      row.appendChild(remove);tokenRows.appendChild(row);
+    });
+  }
+
+  function renderCards(){
+    cardRows.replaceChildren();
+    state.cards.forEach(function(card){
+      var row=document.createElement("fieldset");
+      row.className="card-row";
+      field(row,"ID",card.id,"id",false,false);
+      field(row,"Tanggal",card.date,"date",false,false);
+      field(row,"Judul",card.title,"title",true,false);
+      field(row,"Deskripsi",card.description,"description",true,true);
+      field(row,"Target slide",card.target,"target",false,false);
+      field(row,"Thumbnail",card.thumbnail,"thumbnail",false,false);
+      var actions=document.createElement("div");actions.className="row-actions";
+      var activeLabel=document.createElement("label");activeLabel.className="check";
+      var active=document.createElement("input");active.type="checkbox";active.dataset.field="active";active.checked=card.active!==false;
+      activeLabel.append(active,"Aktif");actions.appendChild(activeLabel);
+      var remove=document.createElement("button");remove.type="button";remove.className="danger";remove.textContent="Hapus";
+      remove.addEventListener("click",function(){row.remove()});actions.appendChild(remove);
+      row.appendChild(actions);cardRows.appendChild(row);
+    });
+  }
+
+  function showApp(nextState){
+    state=nextState;loginView.hidden=true;appView.hidden=false;renderTokens();renderCards();
+  }
+
+  function readConfig(){
+    request("/_slide_admin_config").then(function(response){
+      if(!response.ok) throw new Error("Sesi admin berakhir.");
+      return response.json();
+    }).then(showApp).catch(function(error){loginError.textContent=error.message;loginView.hidden=false;appView.hidden=true});
+  }
+
+  loginForm.addEventListener("submit",function(event){
+    event.preventDefault();loginError.textContent="";
+    request("/_slide_admin_login",{method:"POST",body:JSON.stringify({password:document.getElementById("admin-password").value})})
+      .then(function(response){if(!response.ok) throw new Error("Password admin tidak sesuai.");readConfig()})
+      .catch(function(error){loginError.textContent=error.message});
+  });
+
+  document.getElementById("logout").addEventListener("click",function(){
+    request("/_slide_admin_logout",{method:"POST"}).finally(function(){location.reload()});
+  });
+
+  document.getElementById("add-token").addEventListener("click",function(){
+    var row=document.createElement("div");row.className="token-row";
+    field(row,"Path folder","new-slide/","path",false,false);field(row,"Token","","token",false,false);
+    var remove=document.createElement("button");remove.type="button";remove.className="danger";remove.textContent="Hapus";remove.onclick=function(){row.remove()};row.appendChild(remove);tokenRows.appendChild(row);
+  });
+
+  document.getElementById("add-card").addEventListener("click",function(){
+    state.cards.push({id:"slide-baru",active:true,date:"",title:"Slide baru",description:"",target:"/slide-baru/",thumbnail:"/slide-baru/assets/cover.jpg"});
+    renderCards();
+  });
+
+  document.getElementById("save").addEventListener("click",function(){
+    status.className="";status.textContent="Menyimpan…";
+    var tokens={};
+    tokenRows.querySelectorAll(".token-row").forEach(function(row){
+      var pathValue=row.querySelector('[data-field="path"]').value.trim();
+      var tokenValue=row.querySelector('[data-field="token"]').value.trim().toUpperCase();
+      if(pathValue) tokens[pathValue]=tokenValue;
+    });
+    var cards=[];
+    cardRows.querySelectorAll(".card-row").forEach(function(row){
+      var value=function(key){return row.querySelector('[data-field="'+key+'"]').value.trim()};
+      cards.push({id:value("id"),active:row.querySelector('[data-field="active"]').checked,date:value("date"),title:value("title"),description:value("description"),target:value("target"),thumbnail:value("thumbnail")});
+    });
+    request("/_slide_admin_config",{method:"PUT",body:JSON.stringify({tokens:tokens,cards:cards})})
+      .then(function(response){return response.json().then(function(body){if(!response.ok) throw new Error(body.error||"Gagal menyimpan.");return body.config})})
+      .then(function(nextState){state=nextState;renderTokens();renderCards();status.textContent="Perubahan tersimpan."})
+      .catch(function(error){status.className="error";status.textContent=error.message});
+  });
+
+  readConfig();
+})();
+</script>
+</body>
+</html>

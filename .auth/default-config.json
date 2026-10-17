@@ -1,0 +1,49 @@
+{
+  "cards": [
+    {
+      "id": "2026-10-13-pgri-ai-digital",
+      "active": true,
+      "date": "13 Oktober 2026",
+      "title": "AI dan Literasi Digital dalam Pendidikan",
+      "description": "PGRI Kabupaten Lampung Tengah • Hotel BBC Bandarjaya — Praktik pemanfaatan AI untuk menunjang tugas pokok guru.",
+      "target": "/2026-10-13-pgri-ai-digital/",
+      "thumbnail": "/2026-10-13-pgri-ai-digital/assets/ilustrasi-cover.jpg"
+    },
+    {
+      "id": "fkk-daring-1-penguatan",
+      "active": true,
+      "date": "2026",
+      "title": "FKK Daring 1 — Inkuiri Kolaboratif & Growth Mindset",
+      "description": "Pelatihan Pembelajaran Mendalam bagi Guru • Daring — Penguatan inkuiri kolaboratif dan pola pikir bertumbuh (2 × 45 menit).",
+      "target": "/fkk-daring-1-penguatan/",
+      "thumbnail": "/fkk-daring-1-penguatan/assets/fkkd-cover.jpg"
+    },
+    {
+      "id": "2026-10-6-fkk-daring-3",
+      "active": true,
+      "date": "6 Oktober 2026",
+      "title": "FKK Daring Siklus 3 — Pembelajaran Mendalam Berbasis Kelompok Kerja",
+      "description": "MGMP Matematika SMP Lampung Tengah • Jadwal tahapan implementasi, 7 poin pemanfaatan PID, dan 10 poin perencanaan & asesmen — 20 slide.",
+      "target": "/2026-10-6-fkk-daring-3/",
+      "thumbnail": "/2026-10-6-fkk-daring-3/assets/ringkasan-cover.jpg"
+    },
+    {
+      "id": "2026-10-6-fkk-daring-3-pengantar",
+      "active": true,
+      "date": "6 Oktober 2026",
+      "title": "Pengantar FKK Daring Siklus 3 — Pendampingan Kelompok Kerja",
+      "description": "MGMP Matematika SMP Lampung Tengah • Alur sesi pendampingan: pembukaan, refleksi & berbagi via Padlet, rencana perbaikan — 11 slide.",
+      "target": "/2026-10-6-fkk-daring-3-pengantar/",
+      "thumbnail": "/2026-10-6-fkk-daring-3-pengantar/assets/pengantar-cover.jpg"
+    },
+    {
+      "id": "2026-10-20-fkn-muse-asisten-ai",
+      "active": true,
+      "date": "17 Oktober 2026",
+      "title": "Pemanfaatan AI untuk Pembelajaran Matematika SMP",
+      "description": "Webinar FKN (Forum Komunikasi MGMP Matematika SMP) • Google Meet — Pembelajaran yang lebih kreatif, inovatif, dan bermakna.",
+      "target": "/2026-10-20-fkn-muse-asisten-ai/",
+      "thumbnail": "/2026-10-20-fkn-muse-asisten-ai/assets/fkn-cover.jpg"
+    }
+  ]
+}

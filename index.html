@@ -40,64 +40,49 @@
   <h1>Presentasi<span>ku</span></h1>
   <p class="sub">Kumpulan slide presentasi <b>Gunanto</b> (Guru Matematika — SMPN 1 Punggur) dalam berbagai kegiatan sebagai narasumber / pemateri. Klik kartu untuk membuka slide.</p>
 </header>
-<main class="grid">
+<main id="cards" class="grid"></main>
+<footer>Gunanto • SMPN 1 Punggur • Diperbarui Oktober 2026 · <a href="/admin.html">Admin</a></footer>
+<script>
+(function(){
+  var fallbackCards = [
+    {date:"13 Oktober 2026",title:"AI dan Literasi Digital dalam Pendidikan",description:"PGRI Kabupaten Lampung Tengah • Hotel BBC Bandarjaya — Praktik pemanfaatan AI untuk menunjang tugas pokok guru.",target:"/2026-10-13-pgri-ai-digital/",thumbnail:"/2026-10-13-pgri-ai-digital/assets/ilustrasi-cover.jpg"},
+    {date:"2026",title:"FKK Daring 1 — Inkuiri Kolaboratif & Growth Mindset",description:"Pelatihan Pembelajaran Mendalam bagi Guru • Daring — Penguatan inkuiri kolaboratif dan pola pikir bertumbuh (2 × 45 menit).",target:"/fkk-daring-1-penguatan/",thumbnail:"/fkk-daring-1-penguatan/assets/fkkd-cover.jpg"},
+    {date:"6 Oktober 2026",title:"FKK Daring Siklus 3 — Pembelajaran Mendalam Berbasis Kelompok Kerja",description:"MGMP Matematika SMP Lampung Tengah • Jadwal tahapan implementasi, 7 poin pemanfaatan PID, dan 10 poin perencanaan & asesmen — 20 slide.",target:"/2026-10-6-fkk-daring-3/",thumbnail:"/2026-10-6-fkk-daring-3/assets/ringkasan-cover.jpg"},
+    {date:"6 Oktober 2026",title:"Pengantar FKK Daring Siklus 3 — Pendampingan Kelompok Kerja",description:"MGMP Matematika SMP Lampung Tengah • Alur sesi pendampingan: pembukaan, refleksi & berbagi via Padlet, rencana perbaikan — 11 slide.",target:"/2026-10-6-fkk-daring-3-pengantar/",thumbnail:"/2026-10-6-fkk-daring-3-pengantar/assets/pengantar-cover.jpg"},
+    {date:"17 Oktober 2026",title:"Pemanfaatan AI untuk Pembelajaran Matematika SMP",description:"Webinar FKN (Forum Komunikasi MGMP Matematika SMP) • Google Meet — Pembelajaran yang lebih kreatif, inovatif, dan bermakna.",target:"/2026-10-20-fkn-muse-asisten-ai/",thumbnail:"/2026-10-20-fkn-muse-asisten-ai/assets/fkn-cover.jpg"}
+  ];
 
-  <article class="card">
-    <img class="thumb" src="2026-10-13-pgri-ai-digital/assets/ilustrasi-cover.jpg" alt="AI dan Literasi Digital">
-    <div class="body">
-      <div class="date">13 Oktober 2026</div>
-      <h2>AI dan Literasi Digital dalam Pendidikan</h2>
-      <p>PGRI Kabupaten Lampung Tengah • Hotel BBC Bandarjaya<br>Praktik pemanfaatan AI untuk menunjang tugas pokok guru.</p>
-      <a class="btn" href="2026-10-13-pgri-ai-digital/">Buka Slide →</a>
-    </div>
-  </article>
+  function addText(parent, tag, className, text){
+    var element=document.createElement(tag);
+    if(className) element.className=className;
+    element.textContent=text || "";
+    parent.appendChild(element);
+    return element;
+  }
 
+  function render(cards){
+    var container=document.getElementById("cards");
+    container.replaceChildren();
+    cards.filter(function(card){return card && card.active !== false;}).forEach(function(card){
+      var article=document.createElement("article");article.className="card";
+      var image=document.createElement("img");image.className="thumb";image.src=card.thumbnail;image.alt=card.title || "Slide";article.appendChild(image);
+      var body=document.createElement("div");body.className="body";
+      addText(body,"div","date",card.date);
+      addText(body,"h2","",card.title);
+      addText(body,"p","",card.description);
+      var link=document.createElement("a");link.className="btn";link.href=card.target;link.textContent="Buka Slide →";body.appendChild(link);
+      article.appendChild(body);container.appendChild(article);
+    });
+  }
 
-  <article class="card">
-    <img class="thumb" src="fkk-daring-1-penguatan/assets/fkkd-cover.jpg" alt="FKK Daring 1">
-    <div class="body">
-      <div class="date">2026</div>
-      <h2>FKK Daring 1 — Inkuiri Kolaboratif &amp; Growth Mindset</h2>
-      <p>Pelatihan Pembelajaran Mendalam bagi Guru • Daring<br>Penguatan inkuiri kolaboratif dan pola pikir bertumbuh (2 × 45 menit).</p>
-      <a class="btn" href="fkk-daring-1-penguatan/">Buka Slide →</a>
-    </div>
-  </article>
-
-
-  <article class="card">
-    <img class="thumb" src="2026-10-6-fkk-daring-3/assets/ringkasan-cover.jpg" alt="Ringkasan Modul PM-KKA">
-    <div class="body">
-      <div class="date">6 Oktober 2026</div>
-      <h2>FKK Daring Siklus 3 — Pembelajaran Mendalam Berbasis Kelompok Kerja</h2>
-      <p>MGMP Matematika SMP Lampung Tengah • Jadwal tahapan implementasi, 7 poin pemanfaatan PID, dan 10 poin perencanaan &amp; asesmen — 20 slide.</p>
-      <a class="btn" href="2026-10-6-fkk-daring-3/">Buka Slide →</a>
-    </div>
-  </article>
-
-
-  <article class="card">
-    <img class="thumb" src="2026-10-6-fkk-daring-3-pengantar/assets/pengantar-cover.jpg" alt="Pengantar FKK Daring Siklus 3">
-    <div class="body">
-      <div class="date">6 Oktober 2026</div>
-      <h2>Pengantar FKK Daring Siklus 3 — Pendampingan Kelompok Kerja</h2>
-      <p>MGMP Matematika SMP Lampung Tengah • Alur sesi pendampingan: pembukaan, refleksi &amp; berbagi via Padlet, rencana perbaikan — 11 slide.</p>
-      <a class="btn" href="2026-10-6-fkk-daring-3-pengantar/">Buka Slide →</a>
-    </div>
-  </article>
-
-  <!-- CONTOH kartu berikutnya — duplikat blok <article> di atas untuk presentasi baru -->
-
-  <article class="card">
-    <img class="thumb" src="2026-10-20-fkn-muse-asisten-ai/assets/fkn-cover.jpg" alt="Pemanfaatan AI untuk Pembelajaran Matematika SMP">
-    <div class="body">
-      <div class="date">17 Oktober 2026</div>
-      <h2>Pemanfaatan AI untuk Pembelajaran Matematika SMP</h2>
-      <p>Webinar FKN (Forum Komunikasi MGMP Matematika SMP) • Google Meet<br>Pembelajaran yang lebih kreatif, inovatif, dan bermakna.</p>
-      <a class="btn" href="2026-10-20-fkn-muse-asisten-ai/">Buka Slide →</a>
-    </div>
-  </article>
-
-</main>
-<footer>Gunanto • SMPN 1 Punggur • Diperbarui Oktober 2026</footer>
+  render(fallbackCards);
+  fetch("/_slide_config",{cache:"no-store"}).then(function(response){
+    if(!response.ok) throw new Error("Config unavailable");
+    return response.json();
+  }).then(function(data){
+    if(Array.isArray(data.cards)) render(data.cards);
+  }).catch(function(){ /* Gunakan card bawaan jika service belum tersedia. */ });
+})();
+</script>
 </body>
 </html>

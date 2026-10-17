@@ -9,6 +9,7 @@ Group=ubuntu
 WorkingDirectory=/home/ubuntu/slide/.auth
 Environment=NODE_ENV=production
 Environment=NODE_PATH=/home/ubuntu/gezyslide-auth/node_modules
+Environment=SLIDE_CONFIG_PATH=/var/lib/gezyslide/config.json
 EnvironmentFile=/etc/gezyslide-auth.env
 ExecStart=/usr/bin/node /home/ubuntu/slide/.auth/server.js
 Restart=on-failure
@@ -17,6 +18,7 @@ NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=read-only
+StateDirectory=gezyslide
 UMask=0077
 
 [Install]
